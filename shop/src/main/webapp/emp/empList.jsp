@@ -5,6 +5,7 @@
 
 <!-- Controller Layer -->
 <%
+	System.out.println("---------------- empList ---------------");
 	// 인증분기	 : 세션변수 이름 - loginEmp
 	if(session.getAttribute("loginEmp") == null) {
 		response.sendRedirect("/shop/emp/empLoginForm.jsp");
@@ -12,15 +13,52 @@
 	}
 %>
 <%
-	// request 분석
+	//DB연결
+	Class.forName("org.mariadb.jdbc.Driver");
+	Connection conn = null;
+	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
+
+	// request 분석 - 페이징 - totalRow, lastPage 계산
 	int currentPage = 1;
 	if(request.getParameter("currentPage") != null) {
 		
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
 	
-	int rowPerPage = 10;
+	int rowPerPage = 20;
 	int startRow = (currentPage -1) * rowPerPage ;
+	
+	ResultSet rs2 = null;
+	PreparedStatement stmt2 = null;
+	
+	String sql2 = "select count(*) totalRow from emp";
+	stmt2 = conn.prepareStatement(sql2);
+	
+	rs2 = stmt2.executeQuery();
+	
+	int totalRow = 0;
+	
+	if(rs2.next()) {
+		
+		totalRow = rs2.getInt("totalRow");
+	}
+	// 디버깅코드
+	System.out.println(totalRow + " ======= totalRow");
+	
+	int lastPage = totalRow / rowPerPage;
+	
+	if(totalRow % rowPerPage != 0) {
+		
+		lastPage = lastPage + 1;
+	}
+
+	System.out.println(lastPage + " ======= lastPage");
+	
+	// 페이징 - 페이지별로 출력될 내용
+	String sql3 = "select ";
+	
+	
+	
 %>
 
 <!-- Model Layer -->
@@ -29,10 +67,6 @@
 	// -> API 사용(JDBC API)하여 자료구조(ResultSet) 취득
 	// -> 일반화된 자료구조(ArrayList<HashMap>)로 변경 -> 모델 취득
 	
-	//DB연결
-	Class.forName("org.mariadb.jdbc.Driver");
-	Connection conn = null;
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
 	ResultSet rs1 = null;
 	PreparedStatement stmt1 = null;
 	
@@ -45,7 +79,7 @@
 	
 	// JDBC API 종속된 자료구조 모델 ResultSet -> 기본 API 자료구조(ArrayList)로 변경
 	
-	ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+	ArrayList<HashMap<String, Object>> empList = new ArrayList<HashMap<String, Object>>();
 	
 	// ResultSet -> ArrayList<HashMap<String, Object>>
 	
@@ -58,7 +92,7 @@
 		m.put("hireDate", rs1.getString("hireDate"));
 		m.put("active", rs1.getString("active"));
 		
-		list.add(m);
+		empList.add(m);
 	}
 	
 	// JDBC API 사용 끝 -> DB자원 반납
@@ -77,8 +111,14 @@
 	<title></title>
 </head>
 <body>
-	<div><a href="/shop/emp/empLogout.jsp">로그아웃</a></div>
+	<!-- empMenu.jsp include(주체 : 서버) vs redirect(주체 : 클라이언트) -->
+	<!-- 주체가 서버이기 때문에 /shop부터 시작하지 않음 -->
+	<div>
+		<jsp:include page="/emp/inc/empMenu.jsp"></jsp:include>
+	</div>
+	
 	<h3>사원 목록</h3>
+	
 	<table border="1">
 		<tr>
 			<th>empId</th>
@@ -88,7 +128,7 @@
 			<th>active</th>
 		</tr>
 		<%
-			for(HashMap<String, Object> m : list) {
+			for(HashMap<String, Object> m : empList) {
 				
 		%>
 			<tr>

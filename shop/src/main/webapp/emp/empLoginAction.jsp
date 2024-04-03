@@ -4,6 +4,7 @@
 <%@ page import="java.net.*" %>
 <%@ page import="java.util.*" %>
 <%
+	System.out.println("---------------- empLoginAction ---------------");
 	// 인증분기	 : 세션변수 이름 - loginEmp
 	if(session.getAttribute("loginEmp") != null) {
 		response.sendRedirect("/shop/emp/empList.jsp");
@@ -13,12 +14,9 @@
 <%
 
 	/*
-	select emp_id empId 
-	from emp
-	where active='ON' and emp_id =? and emp_pw = password(?) 
-	*/
-	
-	/*
+		select emp_id empId, emp_name empName, grade from emp 
+		where emp_id =? and emp_pw = password(?)";
+		
 		실패 /emp/empLoginForm.jsp
 		성공 /emp/empList.jsp
 	*/
@@ -38,7 +36,6 @@
 	stmt.setString(2,empPw);
 	rs = stmt.executeQuery();
 	
-	System.out.println("---------------- empLoginAction ---------------");
 	System.out.println(empId + "======== empId");
 	System.out.println(empPw + "======== empPw");
 	System.out.println(stmt);
