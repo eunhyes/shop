@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%@ page import="java.net.*" %>
+<%@ page import="java.util.*" %>
 <%
 	// 인증분기	 : 세션변수 이름 - loginEmp
 	if(session.getAttribute("loginEmp") != null) {
@@ -10,9 +11,7 @@
 	}
 %>
 <%
-/* 	String empId = null;
-	String empPw = null;
-	 */
+
 	/*
 	select emp_id empId 
 	from emp
@@ -31,7 +30,7 @@
 	String empId = request.getParameter("empId");
 	String empPw = request.getParameter("empPw");
 	
-	String sql = "select emp_id empId from emp where active = 'ON' and emp_id =? and emp_pw = password(?)";
+	String sql = "select emp_id empId, emp_name empName, grade from emp where emp_id =? and emp_pw = password(?)";
 	PreparedStatement stmt = null; 	
 	ResultSet rs = null;
 	stmt=conn.prepareStatement(sql);
@@ -39,13 +38,35 @@
 	stmt.setString(2,empPw);
 	rs = stmt.executeQuery();
 	
-	if(rs.next()){  // 로그인성공 (select문 결과값이 있을때)
+	System.out.println("---------------- empLoginAction ---------------");
+	System.out.println(empId + "======== empId");
+	System.out.println(empPw + "======== empPw");
+	System.out.println(stmt);
+	
+	
+	if(rs.next()) {  // 로그인성공 (select문 결과값이 있을때)
+		
 		System.out.println("로그인성공");			
-		session.setAttribute("loginEmp", rs.getString("empId"));	
+		// 세션 변수 안에 여러개의 값을 저장하기 위해서 HashMap타입을 사용
+		HashMap<String, Object> loginEmp = new HashMap<String, Object>();
+		loginEmp.put("empId", rs.getString("empId"));
+		loginEmp.put("empName", rs.getString("empName"));
+		loginEmp.put("grade", rs.getInt("grade"));
+		
+		session.setAttribute("loginEmp", loginEmp);
+		// 디버깅
+		HashMap<String, Object> m = (HashMap<String, Object>)(session.getAttribute("loginEmp"));
+		
+		System.out.println((String)(m.get("empId"))); // 로그인 된 empId
+		System.out.println((String)(m.get("empName"))); // 로그인 된 empName
+		System.out.println((Integer)(m.get("grade"))); // 로그인 된 grade
+		
 		response.sendRedirect("/shop/emp/empList.jsp");
 				
-	}else {		// 로그인실패
+	} else { // 로그인실패
+		
 		System.out.println("로그인실패");
+	
 		String errMsg =  URLEncoder.encode("아이디와 비밀번호가 잘못되었습니다","utf-8");		
 		response.sendRedirect("/shop/emp/empLoginForm.jsp?errMsg="+errMsg); // 자동으로 로그인페이지로 넘어감
 	}

@@ -32,22 +32,23 @@
 	//DB연결
 	Class.forName("org.mariadb.jdbc.Driver");
 	Connection conn = null;
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/diary", "root", "java1234");
+	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
 	ResultSet rs1 = null;
 	PreparedStatement stmt1 = null;
 	
-	String sql1 = "select emp_id empId, emp_name empName, emp_job empJob, hire_date hireDate, active from emp order by active asc, hire_date desc limit( ?, ?)";
+	String sql1 = "select emp_id empId, emp_name empName, emp_job empJob, hire_date hireDate, active from emp order by active asc, hire_date desc limit ?, ?";
 	stmt1 = conn.prepareStatement(sql1);
-	
 	stmt1.setInt(1, startRow);
 	stmt1.setInt(2, rowPerPage);
 	
 	rs1 = stmt1.executeQuery();
 	
 	// JDBC API 종속된 자료구조 모델 ResultSet -> 기본 API 자료구조(ArrayList)로 변경
+	
 	ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
 	
 	// ResultSet -> ArrayList<HashMap<String, Object>>
+	
 	while(rs1.next()) {
 		
 		HashMap<String, Object> m = new HashMap<String, Object>();
@@ -78,7 +79,7 @@
 <body>
 	<div><a href="/shop/emp/empLogout.jsp">로그아웃</a></div>
 	<h3>사원 목록</h3>
-	<table>
+	<table border="1">
 		<tr>
 			<th>empId</th>
 			<th>empName</th>
@@ -95,8 +96,20 @@
 				<td><%=(String)(m.get("empName")) %></td>
 				<td><%=(String)(m.get("empJob")) %></td>
 				<td><%=(String)(m.get("hireDate")) %></td>
-				<td><a href="modifyEmpActive.jsp=<%=(String)(m.get("active")) %>">			
-				<%=(String)(m.get("active")) %></a>	
+				<td>
+					<%
+						HashMap<String, Object> sm = (HashMap<String, Object>)(session.getAttribute("loginEmp"));
+						
+						if((Integer)(sm.get("grade")) > 0) {
+					%>
+				
+					<a href='modifyEmpActive.jsp?empId=<%=(String)(m.get("empId")) %>&active=<%=(String)(m.get("active")) %>'>			
+					<%=(String)(m.get("active")) %></a>	
+					
+					<%
+						}
+					%>
+				
 				</td>
 			</tr>
 		

@@ -1,12 +1,57 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title></title>
-</head>
-<body>
+<%@ page import="java.sql.*" %>    
+  
+<%
+	String empId = request.getParameter("empId");
+	String active = request.getParameter("active");
+	
+	// 디버깅코드
+	System.out.println("----------- modifyEmpAction -------------");
+	System.out.println(empId + "========== empId");
+	System.out.println(active + "========== active");
+	
+	//DB연결
+	Class.forName("org.mariadb.jdbc.Driver");
+	Connection conn = null;
+	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
+	ResultSet rs = null;
+	PreparedStatement stmt = null;
 
-</body>
-</html>
+	String sql = "update emp set active = ? where emp_id = ?";
+	
+	stmt = conn.prepareStatement(sql);
+
+	// 디버깅코드
+	System.out.println(stmt);
+	
+	// active 전환
+	if(active.equals("ON")) {
+		
+		stmt.setString(1, "OFF");
+		
+	} else {
+		
+		stmt.setString(1, "ON");
+	}
+	
+	stmt.setString(2, empId);
+	
+	int row = 0;
+	row = stmt.executeUpdate();
+	
+	if(row == 1) {
+		
+		System.out.println("변경 성공");
+	
+	} else {
+		
+		System.out.println("변경 실패");
+	}
+	
+	response.sendRedirect("/shop/emp/empList.jsp");
+	
+	
+	
+	
+%>
