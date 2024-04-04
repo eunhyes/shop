@@ -54,7 +54,7 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="container">
 <!-- 메인메뉴 -->
 	<div>
 		<jsp:include page="/emp/inc/empMenu.jsp"></jsp:include>

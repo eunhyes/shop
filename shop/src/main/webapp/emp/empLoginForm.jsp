@@ -23,22 +23,23 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 </head>
-<body>
-<div>
-	<form action="/shop/emp/empLoginAction.jsp">
-		<div>
-			<input type="text" name="empId" id="empId"	placeholder="ID">
-		</div>
-		<div>
-			<input type="password" name="empPw" id="empPw"	placeholder="PW">
-		</div>
-		
-		<div>
-			<button type="submit" >login</button>
-		</div>
-	</form>
-
+<body class="container">
+<div class="row">
+	<div>
+		<form action="/shop/emp/empLoginAction.jsp">
+			<div>
+				<input type="text" name="empId" id="empId"	placeholder="ID">
+			</div>
+			<div>
+				<input type="password" name="empPw" id="empPw"	placeholder="PW">
+			</div>
+			
+			<div>
+				<button type="submit" >login</button>
+			</div>
+		</form>
+	
+	</div>
 </div>
-
 </body>
 </html>

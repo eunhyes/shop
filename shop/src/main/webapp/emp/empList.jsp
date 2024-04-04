@@ -116,7 +116,8 @@
 	<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 		
 </head>
-<body>
+<body class="container">
+<div class="row">
 	<!-- empMenu.jsp include(주체 : 서버) vs redirect(주체 : 클라이언트) -->
 	<!-- 주체가 서버이기 때문에 /shop부터 시작하지 않음 -->
 	<div>
@@ -125,7 +126,7 @@
 	
 	<h3>사원 목록</h3>
 	
-	<table border="1">
+	<table class="table table-hover">
 		<tr>
 			<th>empId</th>
 			<th>empName</th>
@@ -135,7 +136,6 @@
 		</tr>
 		<%
 			for(HashMap<String, Object> m : empList) {
-				
 		%>
 			<tr>
 				<td><%=(String)(m.get("empId")) %></td>
@@ -170,38 +170,38 @@
 	<!-- empList 페이징 -->
 	<div>
 	
-		<ul>
+		<ul class="pagination">
 			<%
 				if(currentPage > 1 && currentPage < lastPage) { 
 				// 현재 페이지가 1 ~ lastPage 사이일 경우 -> <<, < , > , >> 모두 활성화
 			%>
 		
-				<li><a href="/shop/emp/empList.jsp?currentPage=1">&laquo;</a></li>
-				<li><a href="/shop/emp/empList.jsp?currentPage="<%=currentPage -1 %>><%=currentPage -1 %></a></li>
-				<li><a href="/shop/emp/empList.jsp?currentPage="<%=currentPage %>><%=currentPage %></a></li>
-				<li><a href="/shop/emp/empList.jsp?currentPage="<%=currentPage +1 %>><%=currentPage +1 %></a></li>
-				<li><a href="/shop/emp/empList.jsp?currentPage="<%=lastPage %>>&raquo;</a></li>
+				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage=1">&laquo;</a></li>
+				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage="<%=currentPage -1 %>><%=currentPage -1 %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage="<%=currentPage %>><%=currentPage %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage="<%=currentPage +1 %>><%=currentPage +1 %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage="<%=lastPage %>>&raquo;</a></li>
 				
 			<%
 				} else if(currentPage == 1) {
 				// 현재 페이지가 1 일 경우 ->  << , < 비활성화
 			%>
-				<li><a href="/shop/emp/empList.jsp?currentPage=1">&laquo;</a></li>
-				<li><a href="/shop/emp/empList.jsp?currentPage="<%=currentPage -1 %>><%=currentPage -1 %></a></li>
-				<li><a href="/shop/emp/empList.jsp?currentPage="<%=currentPage %>><%=currentPage %></a></li>
-				<li><a href="/shop/emp/empList.jsp?currentPage="<%=currentPage +1 %>><%=currentPage +1 %></a></li>
-				<li><a href="/shop/emp/empList.jsp?currentPage="<%=lastPage %>>&raquo;</a></li>
+				<li class="page-item disabled"><a class="page-link" href="/shop/emp/empList.jsp?currentPage=1">&laquo;</a></li>
+				<li class="page-item disabled"><a class="page-link" href="/shop/emp/empList.jsp?currentPage="<%=currentPage -1 %>><%=currentPage -1 %></a></li>
+				<li class="page-item active"><a class="page-link" href="/shop/emp/empList.jsp?currentPage="<%=currentPage %>><%=currentPage %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage="<%=currentPage +1 %>><%=currentPage +1 %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage="<%=lastPage %>>&raquo;</a></li>
 		
 		
 			<%
 				} else if(currentPage == lastPage) {
 				// 현재 페이지가 lastPage 일 경우 ->  > , >> 비활성화
 			%>		
-				<li><a href="/shop/emp/empList.jsp?currentPage=1">&laquo;</a></li>
-				<li><a href="/shop/emp/empList.jsp?currentPage="<%=currentPage -1 %>><%=currentPage -1 %></a></li>
-				<li><a href="/shop/emp/empList.jsp?currentPage="<%=currentPage %>><%=currentPage %></a></li>
-				<li><a href="/shop/emp/empList.jsp?currentPage="<%=currentPage +1 %>><%=currentPage +1 %></a></li>
-				<li><a href="/shop/emp/empList.jsp?currentPage="<%=lastPage %>>&raquo;</a></li>
+				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage=1">&laquo;</a></li>
+				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage="<%=currentPage -1 %>><%=currentPage -1 %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage="<%=currentPage %>><%=currentPage %></a></li>
+				<li class="page-item disabled"><a class="page-link" href="/shop/emp/empList.jsp?currentPage="<%=currentPage +1 %>><%=currentPage +1 %></a></li>
+				<li class="page-item disabled"><a class="page-link" href="/shop/emp/empList.jsp?currentPage="<%=lastPage %>>&raquo;</a></li>
 				
 					
 					
@@ -230,6 +230,6 @@
 
 
 
-
+</div>
 </body>
 </html>

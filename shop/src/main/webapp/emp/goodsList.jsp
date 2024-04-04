@@ -5,14 +5,22 @@
 <%@ page import="java.util.*"%>
 <!-- Controller Layer -->
 <%
+	System.out.println("---------------- goodsList -----------------");
 	// 인증분기	 : 세션변수 이름 - loginEmp
 	if (session.getAttribute("loginEmp") == null) {
 		
 		response.sendRedirect("/shop/emp/empLoginForm.jsp");
 		return;
-}
+	}
 %>
 <%
+// 페이징
+
+	//DB연결
+	Class.forName("org.mariadb.jdbc.Driver");
+	Connection conn = null;
+	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
+	
 	int currentPage = 1;
 	if (request.getParameter("currentPage") != null) {
 	
@@ -22,11 +30,36 @@
 	
 	int rowPerPage = 20;
 	int startRow = (currentPage - 1) * rowPerPage;
+	int totalRow = 0;
+	
+	ResultSet pageRs = null;
+	PreparedStatement pageStmt = null;
+	
+	// SELECT COUNT(*) FROM goods WHERE category = '슬램덩크';
+	String pageSql = "select count(*) from goods where category = ?";
+	
+	pageStmt = conn.prepareStatement(pageSql);
+	pageRs = pageStmt.executeQuery();
+	
+	if(pageRs.next()) {
+		
+		totalRow = pageRs.getInt("totalRow");
+		
+	}
+	// 디버깅코드
+	System.out.println(totalRow + " ======= totalRow");
+	
+	int lastPage = totalRow / rowPerPage;
+	
+	if(totalRow % rowPerPage != 0) {
+		
+		lastPage = lastPage + 1;
+	}
+	// 디버깅코드
+	System.out.println(lastPage + " ======= lastPage");
 	
 	String category = request.getParameter("category");
-	
 	// 디버깅코드
-	System.out.println("---------------- goodsList -----------------");
 	System.out.println(category + " ========= category");
 	
 	/* 
@@ -36,11 +69,7 @@
 %>
 <!-- Model Layer -->
 <%
-	//DB연결
-	Class.forName("org.mariadb.jdbc.Driver");
-	Connection conn = null;
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-	
+// 카테고리별 개수 구하기
 	ResultSet rs1 = null;
 	PreparedStatement stmt1 = null;
 	// goods의 개수가 없는 category는 출력 X, category별 상품 개수
@@ -64,6 +93,7 @@
 	System.out.println(categoryList + " ========== categoryList");
 %>
 <%
+// goodsList HashMap으로 구해서 넣기
 	// null이 아니면 select * from goods where category = ? 
 	// category = ?, limit ?, ?
 	String sql2 = "SELECT goods_no goodsNo, category, emp_id empId, goods_title goodsTitle, goods_price goodsPrice, update_date updateDate FROM goods WHERE category = ? ORDER BY update_date DESC limit ?, ?";
@@ -149,7 +179,8 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="container">
+<div class="row">
 	<!-- 메인메뉴 -->
 	<div>
 		<jsp:include page="/emp/inc/empMenu.jsp"></jsp:include>
@@ -223,6 +254,6 @@
 
 		</table>
 	</div>
-
+</div>
 </body>
 </html>
