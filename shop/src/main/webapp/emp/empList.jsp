@@ -13,12 +13,13 @@
 	}
 %>
 <%
+// 페이징
 	//DB연결
 	Class.forName("org.mariadb.jdbc.Driver");
 	Connection conn = null;
 	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
 
-	// request 분석 - 페이징 - totalRow, lastPage 계산
+	// 페이징 - totalRow, lastPage 구하기
 	int currentPage = 1;
 	if(request.getParameter("currentPage") != null) {
 		
@@ -30,12 +31,12 @@
 	
 	ResultSet rs2 = null;
 	PreparedStatement stmt2 = null;
-	
 	String sql2 = "select count(*) totalRow from emp";
-	stmt2 = conn.prepareStatement(sql2);
 	
+	stmt2 = conn.prepareStatement(sql2);
 	rs2 = stmt2.executeQuery();
 	
+	// 마지막 페이지 = 전체 행 수 / 각 페이지에 보이는 행 수
 	int totalRow = 0;
 	
 	if(rs2.next()) {
@@ -51,16 +52,11 @@
 		
 		lastPage = lastPage + 1;
 	}
-
+	// 디버깅코드
 	System.out.println(lastPage + " ======= lastPage");
-	
-	// 페이징 - 페이지별로 출력될 내용
-	String sql3 = "select ";
-	
 	
 	
 %>
-
 <!-- Model Layer -->
 <%
 	// 특수한 형태의 데이터(RDBMS:mariadb)
@@ -109,6 +105,16 @@
 <head>
 	<meta charset="UTF-8">
 	<title></title>
+	
+	<!-- bootstrap -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+	
+	<!-- google font -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
+		
 </head>
 <body>
 	<!-- empMenu.jsp include(주체 : 서버) vs redirect(주체 : 클라이언트) -->
@@ -158,9 +164,71 @@
 			}
 		
 		%>
-		
 	
 	</table>
+
+	<!-- empList 페이징 -->
+	<div>
+	
+		<ul>
+			<%
+				if(currentPage > 1 && currentPage < lastPage) { 
+				// 현재 페이지가 1 ~ lastPage 사이일 경우 -> <<, < , > , >> 모두 활성화
+			%>
+		
+				<li><a href="/shop/emp/empList.jsp?currentPage=1">&laquo;</a></li>
+				<li><a href="/shop/emp/empList.jsp?currentPage="<%=currentPage -1 %>><%=currentPage -1 %></a></li>
+				<li><a href="/shop/emp/empList.jsp?currentPage="<%=currentPage %>><%=currentPage %></a></li>
+				<li><a href="/shop/emp/empList.jsp?currentPage="<%=currentPage +1 %>><%=currentPage +1 %></a></li>
+				<li><a href="/shop/emp/empList.jsp?currentPage="<%=lastPage %>>&raquo;</a></li>
+				
+			<%
+				} else if(currentPage == 1) {
+				// 현재 페이지가 1 일 경우 ->  << , < 비활성화
+			%>
+				<li><a href="/shop/emp/empList.jsp?currentPage=1">&laquo;</a></li>
+				<li><a href="/shop/emp/empList.jsp?currentPage="<%=currentPage -1 %>><%=currentPage -1 %></a></li>
+				<li><a href="/shop/emp/empList.jsp?currentPage="<%=currentPage %>><%=currentPage %></a></li>
+				<li><a href="/shop/emp/empList.jsp?currentPage="<%=currentPage +1 %>><%=currentPage +1 %></a></li>
+				<li><a href="/shop/emp/empList.jsp?currentPage="<%=lastPage %>>&raquo;</a></li>
+		
+		
+			<%
+				} else if(currentPage == lastPage) {
+				// 현재 페이지가 lastPage 일 경우 ->  > , >> 비활성화
+			%>		
+				<li><a href="/shop/emp/empList.jsp?currentPage=1">&laquo;</a></li>
+				<li><a href="/shop/emp/empList.jsp?currentPage="<%=currentPage -1 %>><%=currentPage -1 %></a></li>
+				<li><a href="/shop/emp/empList.jsp?currentPage="<%=currentPage %>><%=currentPage %></a></li>
+				<li><a href="/shop/emp/empList.jsp?currentPage="<%=currentPage +1 %>><%=currentPage +1 %></a></li>
+				<li><a href="/shop/emp/empList.jsp?currentPage="<%=lastPage %>>&raquo;</a></li>
+				
+					
+					
+			<%		
+				}
+			%>
+		
+		
+		
+		
+		
+		
+		
+		
+		</ul>
+	
+	
+	
+	
+	</div>
+
+
+
+
+
+
+
 
 
 </body>
