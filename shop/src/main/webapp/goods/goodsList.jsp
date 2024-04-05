@@ -13,67 +13,22 @@
 		return;
 	}
 %>
-<%
-// 페이징
 
+<!-- Model Layer -->
+<%
 	//DB연결
 	Class.forName("org.mariadb.jdbc.Driver");
 	Connection conn = null;
 	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
 	
-	int currentPage = 1;
-	if (request.getParameter("currentPage") != null) {
-	
-		currentPage = Integer.parseInt(request.getParameter("currentPage"));
-	
-	}
-	
-	int rowPerPage = 20;
-	int startRow = (currentPage - 1) * rowPerPage;
-	int totalRow = 0;
-	
-	
-	/* 
-	ResultSet rs = null;
-	PreparedStatement stmt = null;
-	
-	// SELECT COUNT(*) FROM goods WHERE category = '슬램덩크';
-	String sql = "select count(*) from goods where category = ?";
-	
-	stmt = conn.prepareStatement(sql);
-	rs = stmt.executeQuery();
-	
-	if(rs.next()) {
-		
-		totalRow = rs.getInt("totalRow");
-		
-	}
-	// 디버깅코드
-	System.out.println(totalRow + " ======= totalRow");
-	
-	int lastPage = totalRow / rowPerPage;
-	
-	if(totalRow % rowPerPage != 0) {
-		
-		lastPage = lastPage + 1;
-	}
-	// 디버깅코드
-	System.out.println(lastPage + " ======= lastPage");
-	 */
-	 
 	String category = request.getParameter("category");
+	if(category == null) { // category가 null일 경우 -> 공백처리
+		
+		category = "";
+	}
 	// 디버깅코드
 	System.out.println(category + " ========= category");
-	
 	 
-	 
-	/* 
-		null 이면 select * from goods
-	   	null이 아니면 select * from goods where category = ? 
-	*/
-%>
-<!-- Model Layer -->
-<%
 // 카테고리별 개수 구하기
 	ResultSet rs1 = null;
 	PreparedStatement stmt1 = null;
@@ -98,15 +53,60 @@
 	System.out.println(categoryList + " ========== categoryList");
 %>
 <%
+// 페이징
+
+	int currentPage = 1;
+	if (request.getParameter("currentPage") != null) {
+	
+		currentPage = Integer.parseInt(request.getParameter("currentPage"));
+	
+	}
+	
+	int rowPerPage = 20;
+	int startRow = (currentPage - 1) * rowPerPage;
+	int totalRow = 0;
+	
+	ResultSet rs = null;
+	PreparedStatement stmt = null;
+	
+	// SELECT COUNT(*) FROM goods WHERE category = '슬램덩크';
+	String sql = "select count(*) cnt from goods where category like ?";
+	
+	stmt = conn.prepareStatement(sql);
+	stmt.setString(1, "%" + category +"%");
+	rs = stmt.executeQuery();
+	
+	if(rs.next()) {
+		
+		totalRow = rs.getInt("cnt");
+		
+	}
+	// 디버깅코드
+	System.out.println(totalRow + " ======= totalRow");
+	
+	int lastPage = totalRow / rowPerPage;
+	if(totalRow % rowPerPage != 0) {
+		
+		lastPage = lastPage + 1;
+	}
+	// 디버깅코드
+	System.out.println(lastPage + " ======= lastPage");
+	 
+	/* 
+		null 이면 select * from goods
+	   	null이 아니면 select * from goods where category = ? 
+	*/
+%>
+<%
 // goodsList HashMap으로 구해서 넣기
 	// null이 아니면 select * from goods where category = ? 
 	// category = ?, limit ?, ?
-	String sql2 = "SELECT goods_no goodsNo, category, emp_id empId, goods_title goodsTitle, goods_price goodsPrice, update_date updateDate FROM goods WHERE category = ? ORDER BY update_date DESC limit ?, ?";
+	String sql2 = "SELECT goods_no goodsNo, category, emp_id empId, goods_title goodsTitle, goods_price goodsPrice, update_date updateDate FROM goods WHERE category like ? ORDER BY update_date DESC limit ?, ?";
 	
 	ResultSet rs2 = null;
 	PreparedStatement stmt2 = null;
 	stmt2 = conn.prepareStatement(sql2);
-	stmt2.setString(1, category);
+	stmt2.setString(1, "%"+category+"%");
 	stmt2.setInt(2, startRow);
 	stmt2.setInt(3, rowPerPage);
 	
@@ -132,40 +132,6 @@
 	
 	}
 %>
-<%
-	// null 이면 select * from goods
-	// limit ?, ?
-	String sql3 = "SELECT goods_no goodsNo, category, emp_id empId, goods_title goodsTitle, goods_price goodsPrice, update_date updateDate FROM goods ORDER BY update_date DESC limit ?, ?";
-	
-	ResultSet rs3 = null;
-	PreparedStatement stmt3 = null;
-	stmt3 = conn.prepareStatement(sql3);
-	stmt3.setInt(1, startRow);
-	stmt3.setInt(2, rowPerPage);
-	
-	rs3 = stmt3.executeQuery();
-	// 디버깅코드
-	System.out.println(stmt3);
-	
-	// ArrayList<HashMap> 에 넣기
-	ArrayList<HashMap<String, Object>> totalList = new ArrayList<HashMap<String, Object>>();
-	
-	while (rs3.next()) {
-	
-		HashMap<String, Object> t = new HashMap<String, Object>();
-	
-		t.put("goodsNo", rs3.getInt("goodsNo"));
-		t.put("category", rs3.getString("category"));
-		t.put("empId", rs3.getString("empId"));
-		t.put("goodsTitle", rs3.getString("goodsTitle"));
-		t.put("goodsPrice", rs3.getString("goodsPrice"));
-		t.put("updateDate", rs3.getString("updateDate"));
-	
-		totalList.add(t);
-	
-	}
-%>
-
 
 
 <!-- View Layer -->
@@ -183,6 +149,34 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
+	
+	<style type="text/css">
+	
+		.back-box {
+		
+			background-color: rgba(255, 255, 255, 0.5);
+		
+		}
+		
+		.goods-box {
+		
+			display: flex;
+			width: 100%;
+			flex-wrap: wrap;
+		
+		}
+
+		.goods-box > div {
+			
+			width: calc(100%%4);
+			height: 200px;
+			box-sizing: border-box;
+		
+		}		
+		
+		
+	</style>
+	
 </head>
 <body class="container" style="background-color: rgba(250, 236, 197, 0.8)">
 <div class="row justify-content-center">
@@ -211,35 +205,29 @@
 		%>
 	</div>
 	<div>
-		<table border="1">
+	
+	
+	
+	</div>
+	
+	
+	
+	
+	
+	
+	<div>
+		<table>
 			<tr>
-				<th>goodsNo</th>
-				<th>category</th>
-				<th>empId</th>
-				<th>goodsTitle</th>
-				<th>goodsPrice</th>
-				<th>updateDate</th>
+				<th>상품 번호</th>
+				<th>카테고리</th>
+				<th>판매자</th>
+				<th>제목</th>
+				<th>가격</th>
+				<th>업데이트 날짜</th>
 			</tr>
 
 			<%
-			if (category == null) {
-
-				for (HashMap<String, Object> t : totalList) {
-			%>
-				<tr>
-					<td><%=(Integer)(t.get("goodsNo"))%></td>
-					<td><%=(String)(t.get("category"))%></td>
-					<td><%=(String)(t.get("empId"))%></td>
-					<td><%=(String)(t.get("goodsTitle"))%></td>
-					<td><%=(String)(t.get("goodsPrice"))%></td>
-					<td><%=(String)(t.get("updateDate"))%></td>
-				</tr>
-
-			<%
-				}
-
-			} else {
-
+		
 				for (HashMap<String, Object> g : goodsList) {
 			%>
 
@@ -253,11 +241,58 @@
 				</tr>
 			<%
 				}
-
-			}
+			
 			%>
 
 		</table>
+	</div>
+	
+	<!-- empList 페이징 -->
+	<div>
+	
+		<ul class="pagination">
+			<%
+				if(currentPage > 1 && currentPage < lastPage) { 
+				// 현재 페이지가 1 ~ lastPage 사이일 경우 -> <<, < , > , >> 모두 활성화
+			%>
+		
+				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=1">&laquo;</a></li>
+				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage="<%=currentPage -1 %>><%=currentPage -1 %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage="<%=currentPage %>><%=currentPage %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage="<%=currentPage +1 %>><%=currentPage +1 %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage="<%=lastPage %>>&raquo;</a></li>
+				
+			<%
+				} else if(currentPage == 1) {
+				// 현재 페이지가 1 일 경우 ->  << , < 비활성화
+			%>
+				<li class="page-item disabled"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=1">&laquo;</a></li>
+				<li class="page-item disabled"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage="<%=currentPage -1 %>><%=currentPage -1 %></a></li>
+				<li class="page-item active"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage="<%=currentPage %>><%=currentPage %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage="<%=currentPage +1 %>><%=currentPage +1 %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage="<%=lastPage %>>&raquo;</a></li>
+		
+		
+			<%
+				} else if(currentPage == lastPage) {
+				// 현재 페이지가 lastPage 일 경우 ->  > , >> 비활성화
+			%>		
+				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=1">&laquo;</a></li>
+				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage="<%=currentPage -1 %>><%=currentPage -1 %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage="<%=currentPage %>><%=currentPage %></a></li>
+				<li class="page-item disabled"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage="<%=currentPage +1 %>><%=currentPage +1 %></a></li>
+				<li class="page-item disabled"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage="<%=lastPage %>>&raquo;</a></li>
+				
+					
+					
+			<%		
+				}
+			%>
+		
+		
+		</ul>
+	
+	
 	</div>
 </div>
 </body>

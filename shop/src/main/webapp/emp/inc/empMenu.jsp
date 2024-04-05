@@ -42,10 +42,10 @@
 		<div>
 			<!-- 개인정보수정 -->
 			<span>
-				<%=(String)(loginMember.get("empName"))%>님 반갑습니다
+				<%=(String)(loginMember.get("empName"))%> 님 반갑습니다 
 			</span>
-			<a href="/shop/emp/empOne.jsp"> 내정보</a>
-			<a href="/shop/emp/empLogout.jsp">로그아웃</a>
+			<a  class="btn btn-outline-warning"  href="/shop/emp/empOne.jsp"> 내정보</a>
+			<a  class="btn btn-outline-warning" href="/shop/emp/empLogout.jsp">로그아웃</a>
 		</div>
 	
 	</nav>
