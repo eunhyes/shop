@@ -32,18 +32,20 @@
 	int startRow = (currentPage - 1) * rowPerPage;
 	int totalRow = 0;
 	
-	ResultSet pageRs = null;
-	PreparedStatement pageStmt = null;
+	
+	/* 
+	ResultSet rs = null;
+	PreparedStatement stmt = null;
 	
 	// SELECT COUNT(*) FROM goods WHERE category = '슬램덩크';
-	String pageSql = "select count(*) from goods where category = ?";
+	String sql = "select count(*) from goods where category = ?";
 	
-	pageStmt = conn.prepareStatement(pageSql);
-	pageRs = pageStmt.executeQuery();
+	stmt = conn.prepareStatement(sql);
+	rs = stmt.executeQuery();
 	
-	if(pageRs.next()) {
+	if(rs.next()) {
 		
-		totalRow = pageRs.getInt("totalRow");
+		totalRow = rs.getInt("totalRow");
 		
 	}
 	// 디버깅코드
@@ -57,11 +59,14 @@
 	}
 	// 디버깅코드
 	System.out.println(lastPage + " ======= lastPage");
-	
+	 */
+	 
 	String category = request.getParameter("category");
 	// 디버깅코드
 	System.out.println(category + " ========= category");
 	
+	 
+	 
 	/* 
 		null 이면 select * from goods
 	   	null이 아니면 select * from goods where category = ? 

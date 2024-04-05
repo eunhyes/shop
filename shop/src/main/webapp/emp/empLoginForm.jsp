@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	System.out.println("---------------- empLoginForm ---------------");
+	System.out.println("---------------- empLoginForm -----------------");
 	// 인증분기	 : 세션변수 이름 - loginEmp
 	if(session.getAttribute("loginEmp") != null) {
 		response.sendRedirect("/shop/emp/empList.jsp");
@@ -22,24 +22,41 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
+
+	<style type="text/css">
+	
+		.login-box {
+		
+		background-color: rgba(255, 255, 255, 0.5);
+		margin: 150px;
+		border-radius: 10px;
+		width: 400px;
+		padding: 30px;
+		
+		}
+	
+	</style>
+
+
 </head>
-<body class="container">
-<div class="row">
-	<div>
+<body class="container" style="background-color: rgba(250, 236, 197, 0.8)">
+<div class="row justify-content-center">
+	<div class="login-box">
 		<form action="/shop/emp/empLoginAction.jsp">
-			<div>
-				<input type="text" name="empId" id="empId"	placeholder="ID">
+			<div class="mb-3">
+				<input type="text" class="form-control" name="empId" id="empId"	placeholder="ID">
 			</div>
-			<div>
-				<input type="password" name="empPw" id="empPw"	placeholder="PW">
+			<div class="mb-3">
+				<input type="password" class="form-control" name="empPw" id="empPw"	placeholder="PW">
 			</div>
 			
 			<div>
-				<button type="submit" >login</button>
+				<button type="submit" class="mt-3 btn" style="width: 100%; background-color: rgba(250, 236, 197, 0.8)">login</button>
 			</div>
 		</form>
 	
 	</div>
+	
 </div>
 </body>
 </html>

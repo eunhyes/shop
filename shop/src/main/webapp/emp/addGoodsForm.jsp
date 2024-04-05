@@ -60,7 +60,7 @@
 		<jsp:include page="/emp/inc/empMenu.jsp"></jsp:include>
 	</div>
 
-	<form method="post" action="/shop/emp/addGoodsAction.jsp">
+	<form action="/shop/emp/addGoodsAction.jsp" method="post" enctype="multipart/form-data">
 	
 		<div>
 			category :
@@ -83,14 +83,22 @@
 			goodsTitle :
 			<input type="text" name="goodsTitle">
 		</div>
+		
+		<div>
+			goodsImage :
+			<input type="file" name="goodsImg">
+		</div>
+		
 		<div>
 			goodsPrice :
 			<input type="number" name="goodsPrice">
 		</div>
+		
 		<div>
 			goodsAmount :
 			<input type="number" name="goodsAmount">
 		</div>
+		
 		<div>
 			goodContent :
 			<textarea rows="5" cols="50" name="goodsContent"></textarea>
@@ -101,15 +109,7 @@
 		</div>
 	
 	</form>
-
-
-
-
-
-
-
-
-
+	
 
 </body>
 </html>
