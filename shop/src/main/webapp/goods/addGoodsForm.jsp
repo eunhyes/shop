@@ -53,14 +53,17 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
+
 </head>
-<body class="container">
+
+<body class="container" style="background-color: rgba(250, 236, 197, 0.8)">
+<div class="row justify-content-center">
 <!-- 메인메뉴 -->
 	<div>
 		<jsp:include page="/emp/inc/empMenu.jsp"></jsp:include>
 	</div>
 
-	<form action="/shop/emp/addGoodsAction.jsp" method="post" enctype="multipart/form-data">
+	<form action="/shop/goods/addGoodsAction.jsp" method="post" enctype="multipart/form-data">
 	
 		<div>
 			category :
@@ -110,6 +113,6 @@
 	
 	</form>
 	
-
+</div>
 </body>
 </html>

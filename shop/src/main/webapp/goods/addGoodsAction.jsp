@@ -39,27 +39,25 @@
 	System.out.println(goodsAmount + " ======== goodsAmount");
 	System.out.println(goodsContent + " ======== goodsContent");
 	
-// Image 업로드
+	// Image 업로드
 	Part part = request.getPart("goodsImg");
 	System.out.println(part + " ======= part");
 	
-/* 	if(part == null) {
-			// 이미지 파일이 없는 경우 = default img
-			response.sendRedirect("./addGoodsForm.jsp");
-	} */
-	
 	String originalName = part.getSubmittedFileName();
-	// originalName에서 확장자 구하기
+	// originalName에서 확장자 구하기(. 뒤에 구하기)
 	int dotIdx = originalName.lastIndexOf(".");
 	String ext = originalName.substring(dotIdx); // .png
 	System.out.print(ext + " ======= ext");
 	// 확장자 앞에 UUID 생성
 	UUID uuid = UUID.randomUUID();
-	String filename = uuid.toString().replace("-", "");
+	String filename = uuid.toString().replace("-", ""); // - 빼기
 	filename = filename + ext;
 	System.out.print(filename + " ======= filename");
 
-	
+	/* 	if(part == null) {
+			// 이미지 파일이 없는 경우 = default img
+			response.sendRedirect("./addGoodsForm.jsp");
+	} */
 	
 %>
 <!-- Controller Layer -->
@@ -111,14 +109,13 @@
 	if(row == 1 ) {
 		
 		System.out.println("등록 성공");
-		response.sendRedirect("/shop/emp/goodsList.jsp");
+		response.sendRedirect("/shop/goods/goodsList.jsp");
 		
 	} else {
 		
 				System.out.println("등록 실패");
-		response.sendRedirect("/shop/emp/addGoodsForm.jsp");
+		response.sendRedirect("/shop/goods/addGoodsForm.jsp");
 	}
-	
 	
 	  /*
     파일 삭제 API

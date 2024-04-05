@@ -184,25 +184,25 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 </head>
-<body class="container">
-<div class="row">
+<body class="container" style="background-color: rgba(250, 236, 197, 0.8)">
+<div class="row justify-content-center">
 	<!-- 메인메뉴 -->
 	<div>
 		<jsp:include page="/emp/inc/empMenu.jsp"></jsp:include>
 	</div>
 
 	<div>
-		<a href="/shop/emp/addGoodsForm.jsp">상품등록</a>
+		<a href="/shop/goods/addGoodsForm.jsp">상품등록</a>
 	</div>
 
 	<!-- 서브메뉴 카테고리별 상품 리스트 -->
 	<div>
-		<a href="/shop/emp/goodsList.jsp">전체</a>
+		<a href="/shop/goods/goodsList.jsp">전체</a>
 		<%
 			for (HashMap m : categoryList) {
 		%>
 		<a
-			href="/shop/emp/goodsList.jsp?category=<%=(String) (m.get("category"))%>">
+			href="/shop/goods/goodsList.jsp?category=<%=(String) (m.get("category"))%>">
 			<%=(String) (m.get("category"))%>(<%=(Integer) (m.get("cnt"))%>)
 		</a>
 

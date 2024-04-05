@@ -34,11 +34,10 @@
 		padding: 30px;
 		
 		}
-	
 	</style>
 
-
 </head>
+
 <body class="container" style="background-color: rgba(250, 236, 197, 0.8)">
 <div class="row justify-content-center">
 	<div class="login-box">
@@ -54,7 +53,6 @@
 				<button type="submit" class="mt-3 btn" style="width: 100%; background-color: rgba(250, 236, 197, 0.8)">login</button>
 			</div>
 		</form>
-	
 	</div>
 	
 </div>

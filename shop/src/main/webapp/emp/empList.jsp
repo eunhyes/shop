@@ -116,8 +116,9 @@
 	<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 		
 </head>
-<body class="container">
-<div class="row">
+
+<body class="container" style="background-color: rgba(250, 236, 197, 0.8)">
+<div class="row justify-content-center">
 	<!-- empMenu.jsp include(주체 : 서버) vs redirect(주체 : 클라이언트) -->
 	<!-- 주체가 서버이기 때문에 /shop부터 시작하지 않음 -->
 	<div>
@@ -210,15 +211,7 @@
 			%>
 		
 		
-		
-		
-		
-		
-		
-		
 		</ul>
-	
-	
 	
 	
 	</div>
@@ -226,10 +219,5 @@
 
 
 
-
-
-
-
-</div>
 </body>
 </html>

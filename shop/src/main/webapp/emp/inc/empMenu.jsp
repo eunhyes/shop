@@ -20,22 +20,37 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
 </head>
-<body>
-	<div>
-		<a href="/shop/emp/empList.jsp">사원관리</a>
-		<!-- category CRUD -->
-		<a href="/shop/emp/categoryList.jsp">카테고리관리</a>
-		<a href="/shop/emp/goodsList.jsp">상품관리</a>
-	<br>	
-		<!-- 개인정보수정 -->
-		<span>
-			<a href="/shop/emp/empOne.jsp">
-			<%=(String)(loginMember.get("empName"))%>님
-			</a> 반갑습니다
-		</span>
+<body class="container-fluid" style="background-color: rgba(250, 236, 197, 0.8)">
+<div class="row justify-content-center">
+<header>	
+	<nav class="navbar navbar-expand-lg" style="background-color: rgba(255, 255, 255, 0.5); width: 100%;">
+		<div style="margin-right: 700px;">
+			<ul class="navbar-nav">
+				<li class="nav-item">
+					<a class="nav-link" href="/shop/emp/empList.jsp">사원관리</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/shop/goods/categoryList.jsp">카테고리관리</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/shop/goods/goodsList.jsp">상품관리</a>
+				</li>
+			
+			</ul>
+		</div>
 		
-		<a href="/shop/emp/empLogout.jsp">로그아웃</a>
-	</div>
+		<div>
+			<!-- 개인정보수정 -->
+			<span>
+				<%=(String)(loginMember.get("empName"))%>님 반갑습니다
+			</span>
+			<a href="/shop/emp/empOne.jsp"> 내정보</a>
+			<a href="/shop/emp/empLogout.jsp">로그아웃</a>
+		</div>
+	
+	</nav>
 
+</header>
+</div>
 </body>
 </html>
