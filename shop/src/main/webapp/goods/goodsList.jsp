@@ -101,7 +101,7 @@
 // goodsList HashMap으로 구해서 넣기
 	// null이 아니면 select * from goods where category = ? 
 	// category = ?, limit ?, ?
-	String sql2 = "SELECT goods_no goodsNo, category, emp_id empId, goods_title goodsTitle, goods_price goodsPrice, update_date updateDate FROM goods WHERE category like ? ORDER BY update_date DESC limit ?, ?";
+	String sql2 = "SELECT goods_no goodsNo, category, emp_id empId, goods_title goodsTitle, filename, goods_price goodsPrice, goods_amount goodsAmount, update_date updateDate FROM goods WHERE category like ? ORDER BY goods_no DESC limit ?, ?";
 	
 	ResultSet rs2 = null;
 	PreparedStatement stmt2 = null;
@@ -125,7 +125,9 @@
 		g.put("category", rs2.getString("category"));
 		g.put("empId", rs2.getString("empId"));
 		g.put("goodsTitle", rs2.getString("goodsTitle"));
-		g.put("goodsPrice", rs2.getString("goodsPrice"));
+		g.put("filename", rs2.getString("filename"));
+		g.put("goodsPrice", rs2.getInt("goodsPrice"));
+		g.put("goodsAmount", rs2.getInt("goodsAmount"));
 		g.put("updateDate", rs2.getString("updateDate"));
 	
 		goodsList.add(g);
@@ -153,34 +155,52 @@
 	<style type="text/css">
 	
 		.back-box {
-		
 			background-color: rgba(255, 255, 255, 0.5);
 		
 		}
 		
-		.goods-box {
-		
+		.goods {
 			display: flex;
-			width: 100%;
+			width: 25%;
 			flex-wrap: wrap;
 		
 		}
 
-		.goods-box > div {
-			
-			width: calc(100%%4);
+		.goods > div {
+			width: calc(100%/4);
 			height: 200px;
 			box-sizing: border-box;
+			text-align: center;
+			
+		}
 		
-		}		
+		.page-link {
+		  color: #000; 
+		  background-color: #fff;
+		  border: 1px solid #ccc; 
+		}
 		
+		.page-item.active .page-link {
+		 z-index: 1;
+		 color: #555;
+		 font-weight:bold;
+		 background-color: #f1f1f1;
+		 border-color: #ccc;
+		 
+		}
+		
+		.page-link:focus, .page-link:hover {
+		  color: #000;
+		  background-color: #fafafa; 
+		  border-color: #ccc;
+		}
 		
 	</style>
 	
 </head>
 <body class="container" style="background-color: rgba(250, 236, 197, 0.8)">
-<div class="row justify-content-center">
-	<!-- 메인메뉴 -->
+<div class="back-box row justify-content-center">
+<!-- 메인메뉴 -->
 	<div>
 		<jsp:include page="/emp/inc/empMenu.jsp"></jsp:include>
 	</div>
@@ -189,72 +209,56 @@
 		<a href="/shop/goods/addGoodsForm.jsp">상품등록</a>
 	</div>
 
-	<!-- 서브메뉴 카테고리별 상품 리스트 -->
+<!-- 서브메뉴 카테고리별 상품 리스트 -->
 	<div>
-		
-		
-			<a href="/shop/goods/goodsList.jsp">전체</a>
-			<%
-				for (HashMap m : categoryList) {
-			%>
-			<a
-				href="/shop/goods/goodsList.jsp?category=<%=(String) (m.get("category"))%>">
-				<%=(String) (m.get("category"))%>(<%=(Integer) (m.get("cnt"))%>)
-			</a>
+		<a href="/shop/goods/goodsList.jsp">전체</a>
+		<%
+			for (HashMap m : categoryList) {
+		%>
+		<a href="/shop/goods/goodsList.jsp?category=<%=(String) (m.get("category"))%>">
+			<%=(String) (m.get("category"))%>(<%=(Integer) (m.get("cnt"))%>)
+		</a>
 	
-			<%
-				} 
-			%>
-		
-		
+		<%
+			} 
+		%>
 	</div>
 	
-	<!-- 상품 사진 나오도록 -->
-	<div>
+<!-- 상품 정보 -->
+	<div class="goods mb-5">
 	
-	
-	
-	
-	
-	
-	
-	</div>
-	
-	
-	
-	<div>
-		<table>
-			<tr>
-				<th>상품 번호</th>
-				<th>카테고리</th>
-				<th>판매자</th>
-				<th>제목</th>
-				<th>가격</th>
-				<th>업데이트 날짜</th>
-			</tr>
-
-			<%
+		<%
+			for (HashMap<String, Object> g : goodsList) {
+		%>
+		<div>
+			
+			<div style="">
+				<img alt="" src="/shop/upload/<%=(String) (g.get("filename"))%>" style="width: 100px; height: 100px;">
+			</div>
+			<div>
+				<%=(Integer) (g.get("goodsNo"))%>
+			</div>
+			<div>
+				<%=(String) (g.get("category"))%>
+			</div>
+			<div>
+				<%=(String) (g.get("goodsTitle"))%>
+			</div>
+			<div>
+				<%=(Integer) (g.get("goodsPrice"))%>
+			</div>
+			
+		</div>
 		
-				for (HashMap<String, Object> g : goodsList) {
-			%>
-
-				<tr>
-					<td><%=(Integer)(g.get("goodsNo"))%></td>
-					<td><%=(String)(g.get("category"))%></td>
-					<td><%=(String)(g.get("empId"))%></td>
-					<td><%=(String)(g.get("goodsTitle"))%></td>
-					<td><%=(String)(g.get("goodsPrice"))%></td>
-					<td><%=(String)(g.get("updateDate"))%></td>
-				</tr>
-			<%
+		<%
 				}
 			
-			%>
+		%>
+		
 
-		</table>
 	</div>
 	
-	<!-- empList 페이징 -->
+<!-- goodsList 페이징 -->
 	<div>
 	
 		<ul class="pagination">
@@ -263,42 +267,36 @@
 				// 현재 페이지가 1 ~ lastPage 사이일 경우 -> <<, < , > , >> 모두 활성화
 			%>
 		
-				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=1">&laquo;</a></li>
-				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage="<%=currentPage -1 %>><%=currentPage -1 %></a></li>
-				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage="<%=currentPage %>><%=currentPage %></a></li>
-				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage="<%=currentPage +1 %>><%=currentPage +1 %></a></li>
-				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage="<%=lastPage %>>&raquo;</a></li>
-				
+				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=1&category=<%=category %>">&laquo;</a></li>
+				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=currentPage -1 %>&category=<%=category %>"><%=currentPage -1 %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=currentPage %>&category=<%=category %>"><%=currentPage %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=currentPage +1 %>&category=<%=category %>"><%=currentPage +1 %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=lastPage %>&category=<%=category %>">&raquo;</a></li>
 			<%
 				} else if(currentPage == 1) {
 				// 현재 페이지가 1 일 경우 ->  << , < 비활성화
 			%>
-				<li class="page-item disabled"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=1">&laquo;</a></li>
-				<li class="page-item disabled"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage="<%=currentPage -1 %>><%=currentPage -1 %></a></li>
-				<li class="page-item active"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage="<%=currentPage %>><%=currentPage %></a></li>
-				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage="<%=currentPage +1 %>><%=currentPage +1 %></a></li>
-				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage="<%=lastPage %>>&raquo;</a></li>
-		
+				<li class="page-item disabled"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=1&category=<%=category %>">&laquo;</a></li>
+				<li class="page-item disabled"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=currentPage -1 %>&category=<%=category %>"><%=currentPage -1 %></a></li>
+				<li class="page-item active"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=currentPage %>&category=<%=category %>"><%=currentPage %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=currentPage +1 %>&category=<%=category %>"><%=currentPage +1 %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=lastPage %>&category=<%=category %>">&raquo;</a></li>
 		
 			<%
 				} else if(currentPage == lastPage) {
 				// 현재 페이지가 lastPage 일 경우 ->  > , >> 비활성화
 			%>		
-				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=1">&laquo;</a></li>
-				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage="<%=currentPage -1 %>><%=currentPage -1 %></a></li>
-				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage="<%=currentPage %>><%=currentPage %></a></li>
-				<li class="page-item disabled"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage="<%=currentPage +1 %>><%=currentPage +1 %></a></li>
-				<li class="page-item disabled"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage="<%=lastPage %>>&raquo;</a></li>
+				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=1&category=<%=category %>">&laquo;</a></li>
+				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=currentPage -1 %>&category=<%=category %>"><%=currentPage -1 %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=currentPage %>&category=<%=category %>"><%=currentPage %></a></li>
+				<li class="page-item disabled"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=currentPage +1 %>&category=<%=category %>"><%=currentPage +1 %></a></li>
+				<li class="page-item disabled"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=lastPage %>&category=<%=category %>">&raquo;</a></li>
 				
-					
-					
 			<%		
 				}
 			%>
 		
-		
 		</ul>
-	
 	
 	</div>
 </div>

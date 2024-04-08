@@ -44,11 +44,10 @@
 <div class="row justify-content-center">
 	<div class="login-box">
 	
-		<div class="col mb-4">
+		<a href="/shop/emp/empLoginForm.jsp"><div class="col mb-4">
 			<img alt="unicorn-p" src="/shop/img/unicorn-p.png" style="width: 100px; height: 100px; margin-right: 30px;">
 			<img alt="unicorn-p" src="/shop/img/unicorn-b.png" style="width: 100px; height: 100px;">
-		
-		</div>
+		</div></a>
 	
 		<form action="/shop/emp/empLoginAction.jsp">
 			<div class="mb-3">
