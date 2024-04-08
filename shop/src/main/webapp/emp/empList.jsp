@@ -1,3 +1,4 @@
+<%@page import="java.util.Locale.Category"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
@@ -178,20 +179,20 @@
 			%>
 		
 				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage=1">&laquo;</a></li>
-				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage="<%=currentPage -1 %>><%=currentPage -1 %></a></li>
-				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage="<%=currentPage %>><%=currentPage %></a></li>
-				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage="<%=currentPage +1 %>><%=currentPage +1 %></a></li>
-				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage="<%=lastPage %>>&raquo;</a></li>
+				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage=<%=currentPage -1 %>"><%=currentPage -1 %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage=<%=currentPage %>"><%=currentPage %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage=<%=currentPage +1 %>"><%=currentPage +1 %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage=<%=lastPage %>">&raquo;</a></li>
 				
 			<%
 				} else if(currentPage == 1) {
 				// 현재 페이지가 1 일 경우 ->  << , < 비활성화
 			%>
 				<li class="page-item disabled"><a class="page-link" href="/shop/emp/empList.jsp?currentPage=1">&laquo;</a></li>
-				<li class="page-item disabled"><a class="page-link" href="/shop/emp/empList.jsp?currentPage="<%=currentPage -1 %>><%=currentPage -1 %></a></li>
-				<li class="page-item active"><a class="page-link" href="/shop/emp/empList.jsp?currentPage="<%=currentPage %>><%=currentPage %></a></li>
-				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage="<%=currentPage +1 %>><%=currentPage +1 %></a></li>
-				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage="<%=lastPage %>>&raquo;</a></li>
+				<li class="page-item disabled"><a class="page-link" href="/shop/emp/empList.jsp?currentPage=<%=currentPage -1 %>"><%=currentPage -1 %></a></li>
+				<li class="page-item active"><a class="page-link" href="/shop/emp/empList.jsp?currentPage=<%=currentPage %>"><%=currentPage %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage=<%=currentPage +1 %>"><%=currentPage +1 %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage=<%=lastPage %>">&raquo;</a></li>
 		
 		
 			<%
@@ -199,10 +200,10 @@
 				// 현재 페이지가 lastPage 일 경우 ->  > , >> 비활성화
 			%>		
 				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage=1">&laquo;</a></li>
-				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage="<%=currentPage -1 %>><%=currentPage -1 %></a></li>
-				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage="<%=currentPage %>><%=currentPage %></a></li>
-				<li class="page-item disabled"><a class="page-link" href="/shop/emp/empList.jsp?currentPage="<%=currentPage +1 %>><%=currentPage +1 %></a></li>
-				<li class="page-item disabled"><a class="page-link" href="/shop/emp/empList.jsp?currentPage="<%=lastPage %>>&raquo;</a></li>
+				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage=<%=currentPage -1 %>"><%=currentPage -1 %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/emp/empList.jsp?currentPage=<%=currentPage %>"><%=currentPage %></a></li>
+				<li class="page-item disabled"><a class="page-link" href="/shop/emp/empList.jsp?currentPage=<%=currentPage +1 %>"><%=currentPage +1 %></a></li>
+				<li class="page-item disabled"><a class="page-link" href="/shop/emp/empList.jsp?currentPage=<%=lastPage %>">&raquo;</a></li>
 				
 					
 					

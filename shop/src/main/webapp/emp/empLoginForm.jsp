@@ -32,8 +32,10 @@
 		border-radius: 10px;
 		width: 400px;
 		padding: 30px;
+		text-align: center;
 		
 		}
+		
 	</style>
 
 </head>
@@ -41,6 +43,13 @@
 <body class="container" style="background-color: rgba(250, 236, 197, 0.8)">
 <div class="row justify-content-center">
 	<div class="login-box">
+	
+		<div class="col mb-4">
+			<img alt="unicorn-p" src="/shop/img/unicorn-p.png" style="width: 100px; height: 100px; margin-right: 30px;">
+			<img alt="unicorn-p" src="/shop/img/unicorn-b.png" style="width: 100px; height: 100px;">
+		
+		</div>
+	
 		<form action="/shop/emp/empLoginAction.jsp">
 			<div class="mb-3">
 				<input type="text" class="form-control" name="empId" id="empId"	placeholder="ID">

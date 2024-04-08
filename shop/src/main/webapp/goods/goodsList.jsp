@@ -191,27 +191,34 @@
 
 	<!-- 서브메뉴 카테고리별 상품 리스트 -->
 	<div>
-		<a href="/shop/goods/goodsList.jsp">전체</a>
-		<%
-			for (HashMap m : categoryList) {
-		%>
-		<a
-			href="/shop/goods/goodsList.jsp?category=<%=(String) (m.get("category"))%>">
-			<%=(String) (m.get("category"))%>(<%=(Integer) (m.get("cnt"))%>)
-		</a>
-
-		<%
-			}
-		%>
+		
+		
+			<a href="/shop/goods/goodsList.jsp">전체</a>
+			<%
+				for (HashMap m : categoryList) {
+			%>
+			<a
+				href="/shop/goods/goodsList.jsp?category=<%=(String) (m.get("category"))%>">
+				<%=(String) (m.get("category"))%>(<%=(Integer) (m.get("cnt"))%>)
+			</a>
+	
+			<%
+				} 
+			%>
+		
+		
 	</div>
+	
+	<!-- 상품 사진 나오도록 -->
 	<div>
 	
 	
 	
+	
+	
+	
+	
 	</div>
-	
-	
-	
 	
 	
 	
