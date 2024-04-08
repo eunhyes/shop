@@ -1,13 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	System.out.println("---------------- empLoginForm -----------------");
-	// 인증분기	 : 세션변수 이름 - loginEmp
-	if(session.getAttribute("loginEmp") != null) {
-		response.sendRedirect("/shop/emp/empList.jsp");
+	System.out.println("---------------- LoginForm -----------------");
+	// 인증분기	 : 세션변수 이름 - loginCustomer
+	if(session.getAttribute("loginCustomer") != null) {
+		response.sendRedirect("/shop/customer/customerGoodsList.jsp");
 		return;
 	}
-	
 %>
     
 <!DOCTYPE html>
@@ -51,17 +50,17 @@
 <div class="row justify-content-center">
 	<div class="login-box">
 	
-		<a href="/shop/emp/empLoginForm.jsp"><div class="col mb-4">
+		<div class="col mb-4"><a href="/shop/customer/loginForm.jsp">
 			<img alt="unicorn-p" src="/shop/img/unicorn-p.png" style="width: 100px; height: 100px; margin-right: 30px;">
 			<img alt="unicorn-p" src="/shop/img/unicorn-b.png" style="width: 100px; height: 100px;">
-		</div></a>
+		</a></div>
 	
-		<form method="post" action="/shop/emp/empLoginAction.jsp">
+		<form method="post" action="/shop/customer/loginAction.jsp">
 			<div class="mb-3">
-				<input type="text" class="form-control" name="empId" id="empId"	placeholder="ID">
+				<input type="text" class="form-control" name="customerMail" id="customerMail"	placeholder="ID">
 			</div>
 			<div class="mb-3">
-				<input type="password" class="form-control" name="empPw" id="empPw"	placeholder="PW">
+				<input type="password" class="form-control" name="customerPw" id="customerPw"	placeholder="PW">
 			</div>
 			
 			<div>

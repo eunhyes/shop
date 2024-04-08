@@ -56,7 +56,7 @@
 
 </head>
 
-<body class="container" style="background-color: rgba(250, 236, 197, 0.8)">
+<body class="container" style="background-color: rgba(219, 210, 224, 0.8)">
 <div class="row justify-content-center">
 <!-- 메인메뉴 -->
 	<div>

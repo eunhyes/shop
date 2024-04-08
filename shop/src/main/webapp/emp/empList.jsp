@@ -118,7 +118,7 @@
 		
 </head>
 
-<body class="container" style="background-color: rgba(250, 236, 197, 0.8)">
+<body class="container" style="background-color: rgba(219, 210, 224, 0.8)">
 <div class="row justify-content-center">
 	<!-- empMenu.jsp include(주체 : 서버) vs redirect(주체 : 클라이언트) -->
 	<!-- 주체가 서버이기 때문에 /shop부터 시작하지 않음 -->

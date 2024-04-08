@@ -19,13 +19,29 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap" rel="stylesheet">
+	
+	<style type="text/css">
+	
+		.button {
+			background-color: rgba(210, 190, 222, 1);
+			border-color : rgba(210, 190, 222, 1);
+			text-align: center;
+			}
+			
+	</style>
+	
 </head>
-<body class="container-fluid" style="background-color: rgba(250, 236, 197, 0.8)">
+<body class="container-fluid" style="background-color: rgba(219, 210, 224, 0.8)">
 <div class="row justify-content-center">
 <header>	
 	<nav class="navbar navbar-expand-lg" style="background-color: rgba(255, 255, 255, 0.5); width: 100%;">
-		<div style="margin-right: 700px;">
+		<div style="margin-right: 600px;">
+			
 			<ul class="navbar-nav">
+				<li><a class="navbar-brand" href="/shop/emp/empList.jsp">
+		   			<img src="/shop/img/balloon-unicorn.png" alt="Logo" style="width: 40px; height: 40px;" class="d-inline-block align-text-top">
+		    	</a></li>
+			
 				<li class="nav-item">
 					<a class="nav-link" href="/shop/emp/empList.jsp">사원관리</a>
 				</li>
@@ -41,11 +57,11 @@
 		
 		<div>
 			<!-- 개인정보수정 -->
-			<span>
+			<span style="margin-right: 10px;">
 				<%=(String)(loginMember.get("empName"))%> 님 반갑습니다 
 			</span>
-			<a  class="btn btn-outline-warning"  href="/shop/emp/empOne.jsp"> 내정보</a>
-			<a  class="btn btn-outline-warning" href="/shop/emp/empLogout.jsp">로그아웃</a>
+			<a class="btn button"  href="/shop/emp/empOne.jsp"> 내정보</a>
+			<a class="btn button" href="/shop/emp/empLogout.jsp">로그아웃</a>
 		</div>
 	
 	</nav>

@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*"%>
 <%@ page import="java.net.*"%>
 <%@ page import="java.util.*"%>
@@ -6,9 +7,9 @@
 <%
 	System.out.println("---------------- goodsList -----------------");
 	// 인증분기	 : 세션변수 이름 - loginEmp
-	if (session.getAttribute("loginEmp") == null) {
+	if (session.getAttribute("loginCustomer") == null) {
 		
-		response.sendRedirect("/shop/emp/empLoginForm.jsp");
+		response.sendRedirect("/shop/customer/loginForm.jsp");
 		return;
 	
 	} 
@@ -214,10 +215,6 @@
 </head>
 <body class="container" style="background-color: rgba(219, 210, 224, 0.8)">
 <div class="back-box row justify-content-center">
-<!-- 메인메뉴 -->
-	<div class="mb-2">
-		<jsp:include page="/emp/inc/empMenu.jsp"></jsp:include>
-	</div>
 
 	
 <!-- 서브메뉴 카테고리별 상품 리스트 -->
@@ -246,7 +243,7 @@
 		<%
 			for (HashMap<String, Object> g : goodsList) {
 		%>
-		<div><a href="/shop/goods/goodsOne.jsp?goodsNo=<%=(Integer) (g.get("goodsNo")) %>">
+		<div>
 			
 			<div style="">
 				<img alt="" src="/shop/upload/<%=(String) (g.get("filename"))%>" style="width: 200px; height: 200px;">
@@ -271,7 +268,7 @@
 			
 		%>
 		
-	</a></div>
+	</div>
 	
 <!-- goodsList 페이징 -->
 	<div>
