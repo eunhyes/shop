@@ -68,6 +68,10 @@
 				<button type="submit" class="button mt-3 btn" style="width: 100%;">login</button>
 			</div>
 		</form>
+		
+		<div>
+			<a href="/shop/emp/addEmpForm.jsp" class="btn button" style="width: 100%;">회원가입</a>
+		</div>
 	</div>
 	
 </div>

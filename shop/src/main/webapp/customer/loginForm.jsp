@@ -63,7 +63,7 @@
 				<input type="password" class="form-control" name="customerPw" id="customerPw"	placeholder="PW">
 			</div>
 			
-			<div>
+			<div class="mb-3">
 				<button type="submit" class="button mt-3 btn" style="width: 100%;">login</button>
 			</div>
 			
@@ -71,9 +71,7 @@
 		</form>
 		
 		<div>
-			<a href="/shop/customer/addCustomerForm.jsp">
-			<button type="button" class="button mt-3 btn" style="width: 100%;">회원가</button>
-			</a>
+			<a href="/shop/customer/addCustomerForm.jsp" class="btn button" style="width: 100%;">회원가입</a>
 		</div>
 		
 	</div>

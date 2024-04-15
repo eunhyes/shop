@@ -5,12 +5,13 @@ import java.util.HashMap;
 
 // emp 테이블을 CRUD 하는 static 메서드 컨테이너
 public class EmpDAO {
-	// 회원가입
+	// emp 회원가입
 	public static int insertEmp(String empId, String empPw, String empJop) throws Exception {
 		int row = 0;
 		// DB접근
 		Connection conn = DBHelper.getConnection();
 		
+		//TODO : 쿼리수정
 		String sql = "insert ";
 		PreparedStatement stmt = null; 	
 		ResultSet rs = null;
@@ -26,7 +27,7 @@ public class EmpDAO {
 		return row;
 	}
 	
-	
+	// emp 로그인
 	// HashMap<Strign, Object> : null 이면 로그인 실패, 아니면 성공
 	// String empId, String empPw : 로그인폼에서 사용자가 입력한 id/pw
 	
