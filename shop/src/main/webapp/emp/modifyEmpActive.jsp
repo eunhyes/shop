@@ -8,8 +8,8 @@
 	
 	// 디버깅코드
 	System.out.println("----------- modifyEmpAction -------------");
-	System.out.println(empId + "========== empId");
-	System.out.println(active + "========== active");
+	System.out.println(empId + " ========== empId");
+	System.out.println(active + " ========== active");
 	
 	//DB연결
 	Class.forName("org.mariadb.jdbc.Driver");

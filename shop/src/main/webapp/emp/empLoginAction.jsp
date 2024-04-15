@@ -21,16 +21,13 @@
 		실패 /emp/empLoginForm.jsp
 		성공 /emp/empList.jsp
 	*/
-	// DB연결
-	Class.forName("org.mariadb.jdbc.Driver");
-	Connection conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop","root","java1234");
-
+	
 	//1. 요청값분석
 	String empId = request.getParameter("empId");
 	String empPw = request.getParameter("empPw");
 	
-	System.out.println(empId + "======== empId");
-	System.out.println(empPw + "======== empPw");
+	System.out.println(empId + " ======== empId");
+	System.out.println(empPw + " ======== empPw");
 	
 	// 2. model 호출
 	HashMap<String, Object> loginEmp = EmpDAO.empLogin(empId, empPw);
@@ -49,9 +46,5 @@
 			
 	}
 		
-	
-	//자원반납
-	conn.close();
-	
 %>
 

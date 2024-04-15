@@ -3,25 +3,38 @@ package shop.dao;
 import java.sql.*;
 import java.util.HashMap;
 
+import org.apache.catalina.connector.Response;
+
 // emp 테이블을 CRUD 하는 static 메서드 컨테이너
 public class EmpDAO {
 	// emp 회원가입
-	public static int insertEmp(String empId, String empPw, String empJop) throws Exception {
+	public static int insertEmp(String empId, String empPw, String empName, String empJop, String hireDate) throws Exception {
 		int row = 0;
 		// DB접근
 		Connection conn = DBHelper.getConnection();
 		
-		//TODO : 쿼리수정
-		String sql = "insert ";
+		String sql = "INSERT INTO emp (emp_id, emp_pw, emp_name, emp_job, hire_date) VALUES(?, password(?), ?, ?, ?);";
 		PreparedStatement stmt = null; 	
 		ResultSet rs = null;
 		stmt=conn.prepareStatement(sql);
 		stmt.setString(1, empId);
-		stmt.setString(2, empId);
-		stmt.setString(3, empId);
-		stmt.setString(4, empId);
+		stmt.setString(2, empPw);
+		stmt.setString(3, empName);
+		stmt.setString(4, empJop);
+		stmt.setString(5, hireDate);
 		
 		row = stmt.executeUpdate();
+		
+		if(row ==1) {
+			
+			System.out.println("입력성공");
+			
+		} else {
+			
+			System.out.println("입력실패");
+			
+		}
+		
 		
 		conn.close();
 		return row;
@@ -58,6 +71,6 @@ public class EmpDAO {
 		
 		conn.close();
 		return resultMap;
+		
 	}
-
 }

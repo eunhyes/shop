@@ -25,9 +25,4 @@ public class DBHelper {
 
 	}
 	
-	public static void main(String[] args) throws Exception {
-		
-		DBHelper.getConnection();
-	}
-	
 }
