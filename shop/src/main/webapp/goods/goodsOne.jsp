@@ -3,8 +3,7 @@
 <%@ page import="java.net.*"%>
 <%@ page import="java.util.*"%>
 <%
-
-	System.out.println("---------------- goodsList -----------------");
+	System.out.println("---------------- goodsOne -----------------");
 	// 인증분기	 : 세션변수 이름 - loginEmp
 	if (session.getAttribute("loginEmp") == null) {
 		
@@ -12,7 +11,6 @@
 		return;
 	
 	} 
-
 %>
 <%
 
@@ -153,6 +151,10 @@
 
 
 <!-- 상품 정보 -->
+
+	<%
+	%>
+
 	<div class="mb-3">
 		<div>상품 번호</div>
 		<div>상품 사진</div>

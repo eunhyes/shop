@@ -66,7 +66,16 @@
 			<div>
 				<button type="submit" class="button mt-3 btn" style="width: 100%;">login</button>
 			</div>
+			
+			
 		</form>
+		
+		<div>
+			<a href="/shop/customer/addCustomerForm.jsp">
+			<button type="button" class="button mt-3 btn" style="width: 100%;">회원가</button>
+			</a>
+		</div>
+		
 	</div>
 	
 </div>
