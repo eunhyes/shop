@@ -11,6 +11,7 @@ public class GoodsDAO {
 		
 		Connection conn = DBHelper.getConnection();
 		
+
 		//TODO : 쿼리 수정, list 완성, list페이지에서 모델부분 수정 
 		String sql = "select * from goods order by create_date desc limit ?, ?";
 		
@@ -25,7 +26,7 @@ public class GoodsDAO {
 			m.put("goodsNo", rs.getInt("goods_no"));
 			m.put("Category", rs.getString("category"));
 			//TODO : 입력값 수정
-			
+
 			
 		}
 		

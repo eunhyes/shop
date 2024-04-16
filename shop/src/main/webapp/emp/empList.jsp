@@ -130,11 +130,11 @@
 	
 	<table class="table table-hover">
 		<tr>
-			<th>empId</th>
-			<th>empName</th>
-			<th>empJob</th>
-			<th>hireDate</th>
-			<th>active</th>
+			<th>ID</th>
+			<th>이름</th>
+			<th>부서</th>
+			<th>채용일</th>
+			<th>권한</th>
 		</tr>
 		<%
 			for(HashMap<String, Object> m : empList) {
