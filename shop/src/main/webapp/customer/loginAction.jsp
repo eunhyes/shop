@@ -2,7 +2,7 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="java.net.*" %>
 <%@ page import="java.util.*" %>
-
+<%@ page import="shop.dao.*" %>
 <%
 	System.out.println("---------------- loginAction ---------------");
 	// 인증분기	 : 세션변수 이름 - loginCustomer
@@ -21,9 +21,8 @@
 */
 
 	//DB연결
-	Class.forName("org.mariadb.jdbc.Driver");
-	Connection conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop","root","java1234");
-
+	Connection conn = DBHelper.getConnection();
+	
 	// 입력값 받기
 	String customerMail = request.getParameter("customerMail");
 	String customerPw = request.getParameter("customerPw");

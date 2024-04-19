@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>    
-  
+<%@ page import="shop.dao.*" %>
+
 <%
 	String empId = request.getParameter("empId");
 	String active = request.getParameter("active");
@@ -11,10 +12,9 @@
 	System.out.println(empId + " ========== empId");
 	System.out.println(active + " ========== active");
 	
-	//DB연결
-	Class.forName("org.mariadb.jdbc.Driver");
-	Connection conn = null;
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
+	// DB연결
+	Connection conn = DBHelper.getConnection();
+
 	ResultSet rs = null;
 	PreparedStatement stmt = null;
 

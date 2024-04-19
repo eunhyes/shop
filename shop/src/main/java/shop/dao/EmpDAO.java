@@ -8,19 +8,20 @@ import org.apache.catalina.connector.Response;
 // emp 테이블을 CRUD 하는 static 메서드 컨테이너
 public class EmpDAO {
 	// emp 회원가입
-	public static int insertEmp(String empId, String empPw, String empName, String empJop, String hireDate) throws Exception {
+	public static int insertEmp(String empId, String empPw, String empName, String empJob, String hireDate) throws Exception {
+		
 		int row = 0;
 		// DB접근
 		Connection conn = DBHelper.getConnection();
 		
-		String sql = "INSERT INTO emp (emp_id, emp_pw, emp_name, emp_job, hire_date) VALUES(?, password(?), ?, ?, ?);";
+		String sql = "INSERT INTO emp (emp_id, emp_pw, emp_name, emp_job, hire_date) VALUES(?, SHA2(?, 256), ?, ?, ?);";
 		PreparedStatement stmt = null; 	
 		ResultSet rs = null;
 		stmt=conn.prepareStatement(sql);
 		stmt.setString(1, empId);
 		stmt.setString(2, empPw);
 		stmt.setString(3, empName);
-		stmt.setString(4, empJop);
+		stmt.setString(4, empJob);
 		stmt.setString(5, hireDate);
 		
 		row = stmt.executeUpdate();
@@ -49,10 +50,10 @@ public class EmpDAO {
 		
 		// DB접근
 		Class.forName("org.mariadb.jdbc.Driver");
-		Connection conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop","root","java1234");
-
-		String sql = "select emp_id empId, emp_name empName, grade from emp where emp_id =? and emp_pw = password(?)";
-		PreparedStatement stmt = null; 	
+		Connection conn = DBHelper.getConnection();
+		
+		String sql = "SELECT emp_id AS empId, emp_name AS empName, grade FROM emp WHERE emp_id=? AND emp_pw = SHA2('1234', 256);";
+		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		stmt=conn.prepareStatement(sql);
 		stmt.setString(1,empId);

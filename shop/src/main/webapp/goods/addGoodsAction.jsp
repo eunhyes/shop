@@ -5,6 +5,8 @@
 <%@ page import="java.util.*" %>  
 <%@ page import="java.io.*" %>
 <%@ page import="java.nio.file.*" %>
+<%@ page import="shop.dao.*" %>
+
 <!-- Controller Layer -->
 <%
 	System.out.println("------------------ addGoodsAction -----------------");
@@ -62,10 +64,9 @@
 %>
 <!-- Controller Layer -->
 <%
-	// DB연결
-	Class.forName("org.mariadb.jdbc.Driver");
-	Connection conn = null;
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
+	//DB연결
+	Connection conn = DBHelper.getConnection();
+
 	ResultSet rs1 = null;
 	PreparedStatement stmt1 = null;
 	

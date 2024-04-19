@@ -3,6 +3,7 @@
 <%@ page import="java.sql.*"%>
 <%@ page import="java.net.*"%>
 <%@ page import="java.util.*"%>
+<%@ page import="shop.dao.*" %>
 <!-- Controller Layer -->
 <%
 	System.out.println("---------------- goodsList -----------------");
@@ -11,17 +12,12 @@
 		
 		response.sendRedirect("/shop/customer/loginForm.jsp");
 		return;
-	
 	} 
-	
 %>
-
 <!-- Model Layer -->
 <%
 	//DB연결
-	Class.forName("org.mariadb.jdbc.Driver");
-	Connection conn = null;
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
+	Connection conn = DBHelper.getConnection();
 	
 	String category = request.getParameter("category");
 	if(category == null) { // category가 null일 경우 -> 공백처리

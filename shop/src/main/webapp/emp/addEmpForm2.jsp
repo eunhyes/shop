@@ -29,7 +29,7 @@
 		.back-box {
 			background-color: rgba(255, 255, 255, 0.5);
 			border-radius: 10px;
-			margin : 300px;
+			margin-top : 300px;
 			width: 400px;
 			padding: 30px;
 			text-align: center;
@@ -47,7 +47,7 @@
 </head>
 
 <body class="container a" style="background-color: rgba(219, 210, 224, 0.8)">
-<div class="row">
+<div class="row" style="text-align: center;">
 	<div class="back-box">
 	
 		<div class="mb-3">가입이 완료되었습니다.</div>

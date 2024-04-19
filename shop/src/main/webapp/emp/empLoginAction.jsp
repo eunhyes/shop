@@ -14,6 +14,9 @@
 %>
 <%
 
+	//DB연결
+	Connection conn = DBHelper.getConnection();
+
 	/*
 		select emp_id empId, emp_name empName, grade from emp 
 		where emp_id =? and emp_pw = password(?)";

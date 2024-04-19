@@ -25,11 +25,8 @@ public class GoodsDAO {
 			HashMap<String, Object> m = new HashMap<String, Object>();
 			m.put("goodsNo", rs.getInt("goods_no"));
 			m.put("Category", rs.getString("category"));
-			//TODO : 입력값 수정
-
 			
 		}
-		
 		
 		conn.close();
 		

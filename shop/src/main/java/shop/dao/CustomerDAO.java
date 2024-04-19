@@ -12,8 +12,8 @@ public class CustomerDAO {
 		// DB접근
 		Connection conn = DBHelper.getConnection();
 		
-		String sql = "INSERT INTO customer (customer_mail, customer_pw, customer_name, customer_birth, customer_gender) "
-				+ "VALUES(?, password(?), ?, ?, ?);";
+		String sql = "INSERT INTO customer (c_mail, c_pw, c_name, c_birth, c_gender) \n"
+				+ "VALUES(?, SHA2(?, 256), ?, ?, ?);";
 		PreparedStatement stmt = null; 	
 		ResultSet rs = null;
 		stmt=conn.prepareStatement(sql);
@@ -22,7 +22,7 @@ public class CustomerDAO {
 		stmt.setString(3, customerName);
 		stmt.setString(4, customerBirth);
 		stmt.setString(5, customerGender);
-		//TODO : customerGender F/M 나누기
+
 		row = stmt.executeUpdate();
 		
 		if(row == 1) {
@@ -38,5 +38,7 @@ public class CustomerDAO {
 		conn.close();
 		return row;
 	}
+	
+	
 
 }

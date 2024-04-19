@@ -3,6 +3,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%@ page import="java.util.*"%>
+<%@ page import="shop.dao.*" %>
 
 <!-- Controller Layer -->
 <%
@@ -15,10 +16,8 @@
 %>
 <%
 // 페이징
-	//DB연결
-	Class.forName("org.mariadb.jdbc.Driver");
-	Connection conn = null;
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
+	// DB연결
+	Connection conn = DBHelper.getConnection();
 
 	// 페이징 - totalRow, lastPage 구하기
 	int currentPage = 1;
