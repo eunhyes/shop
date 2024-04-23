@@ -76,11 +76,13 @@
  		
  			<div class="mb-3 col">
 	 			<div>
-	 				<input type="radio" class="form-check-input" name="customerGender" id="customerGenderM">
-	 				<label class="form-check-label" for="customerGenderM">남</label>
+	 				<label class="form-check-label" for="customerGenderM">남자
+	 				<input type="radio" class="form-check-input" name="customerGender" id="customerGenderM" value="남">
+	 				</label>
 
-	 				 <input type="radio" class="form-check-input" name="customerGender" id="customerGenderF">
-	 				<label class="form-check-label" for="customerGenderF">여</label>
+					<label class="form-check-label" for="customerGenderF">여자
+	 				<input type="radio" class="form-check-input" name="customerGender" id="customerGenderF" value="여">
+	 				</label>
 	 			</div>
  			</div>
  			

@@ -98,41 +98,9 @@
 	*/
 %>
 <%
-// goodsList HashMap으로 구해서 넣기
-	// null이 아니면 select * from goods where category = ? 
-	// category = ?, limit ?, ?
-	String sql2 = "SELECT goods_no goodsNo, category, emp_id empId, goods_title goodsTitle, filename, goods_price goodsPrice, goods_amount goodsAmount, update_date updateDate FROM goods WHERE category like ? ORDER BY goods_no DESC limit ?, ?";
-	
-	ResultSet rs2 = null;
-	PreparedStatement stmt2 = null;
-	stmt2 = conn.prepareStatement(sql2);
-	stmt2.setString(1, "%"+category+"%");
-	stmt2.setInt(2, startRow);
-	stmt2.setInt(3, rowPerPage);
-	
-	rs2 = stmt2.executeQuery();
-	// 디버깅코드
-	System.out.println(stmt2);
-	
-	// ArrayList<HashMap> 에 넣기
-	ArrayList<HashMap<String, Object>> goodsList = new ArrayList<HashMap<String, Object>>();
-	
-	while (rs2.next()) {
-	
-		HashMap<String, Object> g = new HashMap<String, Object>();
-	
-		g.put("goodsNo", rs2.getInt("goodsNo"));
-		g.put("category", rs2.getString("category"));
-		g.put("empId", rs2.getString("empId"));
-		g.put("goodsTitle", rs2.getString("goodsTitle"));
-		g.put("filename", rs2.getString("filename"));
-		g.put("goodsPrice", rs2.getInt("goodsPrice"));
-		g.put("goodsAmount", rs2.getInt("goodsAmount"));
-		g.put("updateDate", rs2.getString("updateDate"));
-	
-		goodsList.add(g);
-	
-	}
+	// goodsList 출력 모델 호출
+	ArrayList<HashMap<String, Object>> goodsList = GoodsDAO.selectGoodsList(category, startRow, rowPerPage);
+
 %>
 
 

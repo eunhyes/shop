@@ -19,7 +19,7 @@
 	// DB연결
 	Connection conn = DBHelper.getConnection();
 
-	// 페이징 - totalRow, lastPage 구하기
+	// 페이징 - totalRow, lastPage 구하 
 	int currentPage = 1;
 	if(request.getParameter("currentPage") != null) {
 		
@@ -204,20 +204,13 @@
 				<li class="page-item disabled"><a class="page-link" href="/shop/emp/empList.jsp?currentPage=<%=currentPage +1 %>"><%=currentPage +1 %></a></li>
 				<li class="page-item disabled"><a class="page-link" href="/shop/emp/empList.jsp?currentPage=<%=lastPage %>">&raquo;</a></li>
 				
-					
-					
 			<%		
 				}
 			%>
 		
-		
 		</ul>
 	
-	
 	</div>
-
-
-
 
 </body>
 </html>

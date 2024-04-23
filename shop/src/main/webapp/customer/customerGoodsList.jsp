@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*"%>
 <%@ page import="java.net.*"%>
 <%@ page import="java.util.*"%>
@@ -99,6 +98,7 @@
 // goodsList HashMap으로 구해서 넣기
 	// null이 아니면 select * from goods where category = ? 
 	// category = ?, limit ?, ?
+	/* 
 	String sql2 = "SELECT goods_no goodsNo, category, emp_id empId, goods_title goodsTitle, filename, goods_price goodsPrice, goods_amount goodsAmount, update_date updateDate FROM goods WHERE category like ? ORDER BY goods_no DESC limit ?, ?";
 	
 	ResultSet rs2 = null;
@@ -130,7 +130,9 @@
 	
 		goodsList.add(g);
 	
-	}
+	} */
+	
+	ArrayList<HashMap<String, Object>> goodsList = GoodsDAO.selectGoodsList(category, startRow, rowPerPage);
 %>
 
 

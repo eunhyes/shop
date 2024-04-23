@@ -19,6 +19,7 @@
 %>   
 <!-- Session 설정값 : 입력시 로그인 emp의 emp_id값 필요 -->
 <%
+	// 세션 모듈 호출
 	HashMap<String, Object> loginMember = (HashMap<String, Object>)(session.getAttribute("loginEmp"));
 	// 여기다시확인
 	String empId = (String)(loginMember.get("empId"));

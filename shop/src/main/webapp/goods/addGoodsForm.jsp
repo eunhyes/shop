@@ -3,6 +3,7 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="java.net.*" %>
 <%@ page import="java.util.*" %>  
+<%@ page import="shop.dao.*" %>
 <!-- Controller Layer -->
 <%
 	System.out.println("------------------ addGoodsForm -----------------");
@@ -15,10 +16,7 @@
 <!-- Model Layer -->
 <%
 	//DB연결
-	Class.forName("org.mariadb.jdbc.Driver");
-	Connection conn = null;
-	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-	
+	Connection conn = DBHelper.getConnection();
 	ResultSet rs1 = null;
 	PreparedStatement stmt1 = null;
 	// goods의 개수가 없는 category는 출력 X, category별 상품 개수

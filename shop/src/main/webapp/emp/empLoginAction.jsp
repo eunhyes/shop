@@ -14,17 +14,6 @@
 %>
 <%
 
-	//DB연결
-	Connection conn = DBHelper.getConnection();
-
-	/*
-		select emp_id empId, emp_name empName, grade from emp 
-		where emp_id =? and emp_pw = password(?)";
-		
-		실패 /emp/empLoginForm.jsp
-		성공 /emp/empList.jsp
-	*/
-	
 	//1. 요청값분석
 	String empId = request.getParameter("empId");
 	String empPw = request.getParameter("empPw");
@@ -38,7 +27,6 @@
 	if(loginEmp == null) {  // 로그인실패
 		
 		System.out.println("로그인실패");
-	
 		String errMsg =  URLEncoder.encode("아이디와 비밀번호가 잘못되었습니다","utf-8");		
 		response.sendRedirect("/shop/emp/empLoginForm.jsp?errMsg="+errMsg); // 자동으로 로그인페이지로 넘어감
 			
