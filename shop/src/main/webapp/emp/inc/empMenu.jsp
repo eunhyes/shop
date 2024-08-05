@@ -51,6 +51,9 @@
 				<li class="nav-item">
 					<a class="nav-link" href="/shop/goods/goodsList.jsp">상품관리</a>
 				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/shop/emp/ordersList.jsp">주문관리</a>
+				</li>
 			
 			</ul>
 		</div>

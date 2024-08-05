@@ -5,53 +5,32 @@
 <%@ page import="shop.dao.*" %>
 <!-- Controller Layer -->
 <%
-	System.out.println("---------------- goodsList -----------------");
-	// 인증분기	 : 세션변수 이름 - loginEmp
-	if (session.getAttribute("loginCustomer") == null) {
-		
-		response.sendRedirect("/shop/customer/loginForm.jsp");
+	System.out.println("--------------- customerGoodsList -----------------");
+	// 인증분기	 : 세션변수 이름 - loginCustomer
+	if(session.getAttribute("loginCustomer") != null) {
+		response.sendRedirect("/shop/customer/customerGoodsList.jsp");
 		return;
-	} 
+	}
 %>
 <!-- Model Layer -->
 <%
-	//DB연결
-	Connection conn = DBHelper.getConnection();
-	
+// 카테고리별 개수 구하기 
 	String category = request.getParameter("category");
-	if(category == null) { // category가 null일 경우 -> 공백처리
+	if(category == null) { // category가 null일 경우 -> 공백처리 -> category로 출력X
 		
 		category = "";
 	}
 	// 디버깅코드
 	System.out.println(category + " ========= category");
-	 
-// 카테고리별 개수 구하기
-	ResultSet rs1 = null;
-	PreparedStatement stmt1 = null;
-	// goods의 개수가 없는 category는 출력 X, category별 상품 개수
-	String sql1 = "select category, count(*) cnt from goods group by category order by category asc";
-	stmt1 = conn.prepareStatement(sql1);
 	
-	rs1 = stmt1.executeQuery();
+	int cnt = 0;
 	
-	ArrayList<HashMap<String, Object>> categoryList = new ArrayList<HashMap<String, Object>>();
+	// category 리스트 + 상품 개수 출력 모델 호출 
+	ArrayList<HashMap<String, Object>> categoryList = GoodsDAO.categoryList(category, cnt);
 	
-	while (rs1.next()) {
-	
-		HashMap<String, Object> m = new HashMap<String, Object>();
-	
-		m.put("category", rs1.getString("category"));
-		m.put("cnt", rs1.getInt("cnt"));
-		categoryList.add(m);
-	
-	}
-	// 디버깅코드
-	System.out.println(categoryList + " ========== categoryList");
 %>
 <%
-// 페이징
-
+	// 상품 목록 페이징
 	int currentPage = 1;
 	if (request.getParameter("currentPage") != null) {
 	
@@ -60,81 +39,19 @@
 	}
 	
 	int rowPerPage = 20;
-	int startRow = (currentPage - 1) * rowPerPage;
 	int totalRow = 0;
-	
-	ResultSet rs = null;
-	PreparedStatement stmt = null;
-	
-	// SELECT COUNT(*) FROM goods WHERE category = '슬램덩크';
-	String sql = "select count(*) cnt from goods where category like ?";
-	
-	stmt = conn.prepareStatement(sql);
-	stmt.setString(1, "%" + category +"%");
-	rs = stmt.executeQuery();
-	
-	if(rs.next()) {
-		
-		totalRow = rs.getInt("cnt");
-		
-	}
-	// 디버깅코드
-	System.out.println(totalRow + " ======= totalRow");
-	
-	int lastPage = totalRow / rowPerPage;
-	if(totalRow % rowPerPage != 0) {
-		
-		lastPage = lastPage + 1;
-	}
-	// 디버깅코드
-	System.out.println(lastPage + " ======= lastPage");
-	 
-	/* 
-		null 이면 select * from goods
-	   	null이 아니면 select * from goods where category = ? 
-	*/
+	int lastPage = 0;
+	int startRow = (currentPage - 1) * rowPerPage;
+
+	// goodList 페이징 모델 호출
+	ArrayList<HashMap<String, Object>> listPaging = GoodsDAO.listPaging(category, totalRow, rowPerPage, lastPage);
+
 %>
 <%
-// goodsList HashMap으로 구해서 넣기
-	// null이 아니면 select * from goods where category = ? 
-	// category = ?, limit ?, ?
-	/* 
-	String sql2 = "SELECT goods_no goodsNo, category, emp_id empId, goods_title goodsTitle, filename, goods_price goodsPrice, goods_amount goodsAmount, update_date updateDate FROM goods WHERE category like ? ORDER BY goods_no DESC limit ?, ?";
-	
-	ResultSet rs2 = null;
-	PreparedStatement stmt2 = null;
-	stmt2 = conn.prepareStatement(sql2);
-	stmt2.setString(1, "%"+category+"%");
-	stmt2.setInt(2, startRow);
-	stmt2.setInt(3, rowPerPage);
-	
-	rs2 = stmt2.executeQuery();
-	// 디버깅코드
-	System.out.println(stmt2);
-	
-	// ArrayList<HashMap> 에 넣기
-	ArrayList<HashMap<String, Object>> goodsList = new ArrayList<HashMap<String, Object>>();
-	
-	while (rs2.next()) {
-	
-		HashMap<String, Object> g = new HashMap<String, Object>();
-	
-		g.put("goodsNo", rs2.getInt("goodsNo"));
-		g.put("category", rs2.getString("category"));
-		g.put("empId", rs2.getString("empId"));
-		g.put("goodsTitle", rs2.getString("goodsTitle"));
-		g.put("filename", rs2.getString("filename"));
-		g.put("goodsPrice", rs2.getInt("goodsPrice"));
-		g.put("goodsAmount", rs2.getInt("goodsAmount"));
-		g.put("updateDate", rs2.getString("updateDate"));
-	
-		goodsList.add(g);
-	
-	} */
-	
+	// 상품 List 모델 호출 (HashMap으로 구해서 넣기)
 	ArrayList<HashMap<String, Object>> goodsList = GoodsDAO.selectGoodsList(category, startRow, rowPerPage);
-%>
 
+%>
 
 <!-- View Layer -->
 <!DOCTYPE html>
@@ -157,7 +74,6 @@
 		.a {
 			color : black;
 			text-decoration: none;
-			margin-right: 5px;
 		}
 	
 	
@@ -169,7 +85,6 @@
 			display: flex;
 			width: 25%;
 			flex-wrap: wrap;
-		
 		}
 
 		.goods > div {
@@ -193,7 +108,6 @@
 			border-color: #ccc;
 		}
 		
-		
 	 	.page-link:focus, .page-link:hover {
 			color: #000;
 			background-color: #fafafa; 
@@ -213,15 +127,14 @@
 </head>
 <body class="container" style="background-color: rgba(219, 210, 224, 0.8)">
 <div class="back-box row justify-content-center">
-
 	
 <!-- 서브메뉴 카테고리별 상품 리스트 -->
-	<div class="mb-3">
-		<a class="a" href="/shop/goods/goodsList.jsp">전체</a>
+	<div class="mb-3 mt-3">
+		<a class="a" href="/shop/customer/customerGoodsList.jsp">전체</a>
 		<%
 			for (HashMap m : categoryList) {
 		%>
-		<a class="a" href="/shop/goods/goodsList.jsp?category=<%=(String) (m.get("category"))%>">
+		<a class="a" href="/shop/customer/customerGoodsList.jsp?category=<%=(String) (m.get("category"))%>">
 			<%=(String) (m.get("category"))%>(<%=(Integer) (m.get("cnt"))%>)
 		</a>
 	
@@ -241,7 +154,7 @@
 		<%
 			for (HashMap<String, Object> g : goodsList) {
 		%>
-		<div>
+		<div><a class="a" href="/shop/customer/customerGoodsList.jsp?goodsNo=<%=(Integer) (g.get("goodsNo")) %>"> 
 			
 			<div style="">
 				<img alt="" src="/shop/upload/<%=(String) (g.get("filename"))%>" style="width: 200px; height: 200px;">
@@ -266,7 +179,7 @@
 			
 		%>
 		
-	</div>
+	</a></div>
 	
 <!-- goodsList 페이징 -->
 	<div>
@@ -277,30 +190,30 @@
 				// 현재 페이지가 1 ~ lastPage 사이일 경우 -> <<, < , > , >> 모두 활성화
 			%>
 		
-				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=1&category=<%=category %>">&laquo;</a></li>
-				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=currentPage -1 %>&category=<%=category %>"><%=currentPage -1 %></a></li>
-				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=currentPage %>&category=<%=category %>"><%=currentPage %></a></li>
-				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=currentPage +1 %>&category=<%=category %>"><%=currentPage +1 %></a></li>
-				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=lastPage %>&category=<%=category %>">&raquo;</a></li>
+				<li class="page-item"><a class="page-link" href="/shop/customer/customerGoodsList.jsp?currentPage=1&category=<%=category %>">&laquo;</a></li>
+				<li class="page-item"><a class="page-link" href="/shop/customer/customerGoodsList.jsp?currentPage=<%=currentPage -1 %>&category=<%=category %>"><%=currentPage -1 %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/customer/customerGoodsList.jsp?currentPage=<%=currentPage %>&category=<%=category %>"><%=currentPage %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/customer/customerGoodsList.jsp?currentPage=<%=currentPage +1 %>&category=<%=category %>"><%=currentPage +1 %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/customer/customerGoodsList.jsp?currentPage=<%=lastPage %>&category=<%=category %>">&raquo;</a></li>
 			<%
 				} else if(currentPage == 1) {
 				// 현재 페이지가 1 일 경우 ->  << , < 비활성화
 			%>
-				<li class="page-item disabled"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=1&category=<%=category %>">&laquo;</a></li>
-				<li class="page-item disabled"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=currentPage -1 %>&category=<%=category %>"><%=currentPage -1 %></a></li>
-				<li class="page-item active"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=currentPage %>&category=<%=category %>"><%=currentPage %></a></li>
-				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=currentPage +1 %>&category=<%=category %>"><%=currentPage +1 %></a></li>
-				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=lastPage %>&category=<%=category %>">&raquo;</a></li>
+				<li class="page-item disabled"><a class="page-link" href="/shop/customer/customerGoodsList.jsp?currentPage=1&category=<%=category %>">&laquo;</a></li>
+				<li class="page-item disabled"><a class="page-link" href="/shop/customer/customerGoodsList.jsp?currentPage=<%=currentPage -1 %>&category=<%=category %>"><%=currentPage -1 %></a></li>
+				<li class="page-item active"><a class="page-link" href="/shop/customer/customerGoodsList.jsp?currentPage=<%=currentPage %>&category=<%=category %>"><%=currentPage %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/customer/customerGoodsList.jsp?currentPage=<%=currentPage +1 %>&category=<%=category %>"><%=currentPage +1 %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/customer/customerGoodsList.jsp?currentPage=<%=lastPage %>&category=<%=category %>">&raquo;</a></li>
 		
 			<%
 				} else if(currentPage == lastPage) {
 				// 현재 페이지가 lastPage 일 경우 ->  > , >> 비활성화
 			%>		
-				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=1&category=<%=category %>">&laquo;</a></li>
-				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=currentPage -1 %>&category=<%=category %>"><%=currentPage -1 %></a></li>
-				<li class="page-item"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=currentPage %>&category=<%=category %>"><%=currentPage %></a></li>
-				<li class="page-item disabled"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=currentPage +1 %>&category=<%=category %>"><%=currentPage +1 %></a></li>
-				<li class="page-item disabled"><a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=lastPage %>&category=<%=category %>">&raquo;</a></li>
+				<li class="page-item"><a class="page-link" href="/shop/customer/customerGoodsList.jsp?currentPage=1&category=<%=category %>">&laquo;</a></li>
+				<li class="page-item"><a class="page-link" href="/shop/customer/customerGoodsList.jsp?currentPage=<%=currentPage -1 %>&category=<%=category %>"><%=currentPage -1 %></a></li>
+				<li class="page-item"><a class="page-link" href="/shop/customer/customerGoodsList.jsp?currentPage=<%=currentPage %>&category=<%=category %>"><%=currentPage %></a></li>
+				<li class="page-item disabled"><a class="page-link" href="/shop/customer/customerGoodsList.jsp?currentPage=<%=currentPage +1 %>&category=<%=category %>"><%=currentPage +1 %></a></li>
+				<li class="page-item disabled"><a class="page-link" href="/shop/customer/customerGoodsList.jsp?currentPage=<%=lastPage %>&category=<%=category %>">&raquo;</a></li>
 				
 			<%		
 				}

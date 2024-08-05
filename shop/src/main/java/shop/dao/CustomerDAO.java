@@ -2,6 +2,7 @@ package shop.dao;
 
 import java.sql.*;
 import java.util.*;
+import java.net.*;
 
 public class CustomerDAO {
 
@@ -16,6 +17,7 @@ public class CustomerDAO {
 		// System.out.println(CustomerDAO.login("a@goodee.com", "1234")); // 성공...
 		//System.out.println(CustomerDAO.deleteCustomer("a@goodee.com", "1234")); 
 	}
+	
 	
 	// 회원탈퇴
 	// 호출 : dropCustomerAction.jsp
@@ -59,7 +61,7 @@ public class CustomerDAO {
 		
 		String sql = "UPDATE customer"
 				+ " SET c_pw = ?"
-				+ " where mail = ? and pw = ?";
+				+ " WHERE mail = ? AND pw = ?";
 		
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, newPw);
@@ -91,9 +93,9 @@ public class CustomerDAO {
 		
 		Connection conn = DBHelper.getConnection();
 		
-		String sql = "select mail"
-				+ " from customer"
-				+ " where mail = ?";
+		String sql = "SELECT c_mail"
+				+ " FROM customer"
+				+ " WHERE c_mail = ?";
 		
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		
@@ -104,8 +106,8 @@ public class CustomerDAO {
 		if(!rs.next()) { // 사용불가
 			result = true;
 		}		
-		conn.close();
 		
+		conn.close();
 		return result;
 	}
 	
@@ -114,32 +116,35 @@ public class CustomerDAO {
 	// 호출 : loginAction.jsp
 	// param : String(mail), String(pw)
 	// return : HashMap(메일, 이름)
-	public static HashMap<String, String> login(String mail, String pw) throws Exception {
-		HashMap<String, String> map = null;
+	public static HashMap<String, Object> loginCustomer(String customerMail, String customerPw) throws Exception {
+		HashMap<String, Object> map = null;
 		
 		Connection conn = DBHelper.getConnection();
 		
-		String sql = "select mail, name"
-				+ " from customer"
-				+ " where mail = ? and pw = ?";
+		String sql = "SELECT c_mail cMail, c_name cName"
+				+ " FROM customer"
+				+ " WHERE c_mail = ? AND c_pw = SHA2(?, 256)";
 		
 		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setString(1, mail);
-		stmt.setString(2, pw);
+		stmt.setString(1, customerMail);
+		stmt.setString(2, customerPw);
 		
 		ResultSet rs = stmt.executeQuery();
 		
 		if(rs.next()) {
 			
-			map = new HashMap<String, String>();
-			map.put("mail", rs.getString("mail"));
-			map.put("name", rs.getString("name"));
-		}
+			map = new HashMap<String, Object>();
+			map.put("mail", rs.getString("cMail"));
+			map.put("name", rs.getString("cName"));
+			
+			
+		} 
+		
 		
 		conn.close();
 		return map;
 	}
-	//TODO : 위 메서드들 Action페이지에서 정리 및 추가 
+
 	
 	// customer 회원가입
 	// /shop/customer/addCustomerAction.jsp
@@ -176,7 +181,5 @@ public class CustomerDAO {
 		conn.close();
 		return row;
 	}
-	
-	
 
 }

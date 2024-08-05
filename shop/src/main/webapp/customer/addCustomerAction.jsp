@@ -34,8 +34,8 @@
 	System.out.println(createDate + " ======= createDate");
 %>
 <%
-	// 2. model 호출 
+	// 회원가입 모델 호출 
 	CustomerDAO.insertCustomer(customerMail, customerPw, customerName, customerBirth, customerGender);
-	
+	// 회원가입 성공시 addCustomerForm2 로 이동
 	response.sendRedirect("/shop/customer/addCustomerForm2.jsp");
 %>

@@ -30,7 +30,7 @@ public class EmpDAO {
 		
 		row = stmt.executeUpdate();
 		
-		if(row ==1) {//
+		if(row ==1) {
 			
 			System.out.println("입력성공");
 			

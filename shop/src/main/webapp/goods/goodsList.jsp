@@ -18,9 +18,7 @@
 
 <!-- Model Layer -->
 <%
-	// DB연결
-	Connection conn = DBHelper.getConnection();
-
+//카테고리별 개수 구하기 
 	String category = request.getParameter("category");
 	if(category == null) { // category가 null일 경우 -> 공백처리
 		
@@ -29,32 +27,14 @@
 	// 디버깅코드
 	System.out.println(category + " ========= category");
 	 
-// 카테고리별 개수 구하기
-	ResultSet rs1 = null;
-	PreparedStatement stmt1 = null;
-	// goods의 개수가 없는 category는 출력 X, category별 상품 개수
-	String sql1 = "select category, count(*) cnt from goods group by category order by category asc";
-	stmt1 = conn.prepareStatement(sql1);
+	int cnt = 0;
+
+	// category 리스트 + 상품 개수 출력 모델 호출 
+	ArrayList<HashMap<String, Object>> categoryList = GoodsDAO.categoryList(category, cnt);
 	
-	rs1 = stmt1.executeQuery();
-	
-	ArrayList<HashMap<String, Object>> categoryList = new ArrayList<HashMap<String, Object>>();
-	
-	while (rs1.next()) {
-	
-		HashMap<String, Object> m = new HashMap<String, Object>();
-	
-		m.put("category", rs1.getString("category"));
-		m.put("cnt", rs1.getInt("cnt"));
-		categoryList.add(m);
-	
-	}
-	// 디버깅코드
-	System.out.println(categoryList + " ========== categoryList");
 %>
 <%
-// 페이징
-
+	// 상품 목록 페이징 
 	int currentPage = 1;
 	if (request.getParameter("currentPage") != null) {
 	
@@ -63,39 +43,13 @@
 	}
 	
 	int rowPerPage = 20;
-	int startRow = (currentPage - 1) * rowPerPage;
 	int totalRow = 0;
-	
-	ResultSet rs = null;
-	PreparedStatement stmt = null;
-	
-	// SELECT COUNT(*) FROM goods WHERE category = '슬램덩크';
-	String sql = "select count(*) cnt from goods where category like ?";
-	
-	stmt = conn.prepareStatement(sql);
-	stmt.setString(1, "%" + category +"%");
-	rs = stmt.executeQuery();
-	
-	if(rs.next()) {
-		
-		totalRow = rs.getInt("cnt");
-		
-	}
-	// 디버깅코드
-	System.out.println(totalRow + " ======= totalRow");
-	
-	int lastPage = totalRow / rowPerPage;
-	if(totalRow % rowPerPage != 0) {
-		
-		lastPage = lastPage + 1;
-	}
-	// 디버깅코드
-	System.out.println(lastPage + " ======= lastPage");
-	 
-	/* 
-		null 이면 select * from goods
-	   	null이 아니면 select * from goods where category = ? 
-	*/
+	int lastPage = 0;
+	int startRow = (currentPage - 1) * rowPerPage;
+
+	// goodList 페이징 모델 호출
+	ArrayList<HashMap<String, Object>> listPaging = GoodsDAO.listPaging(category, totalRow, rowPerPage, lastPage);
+
 %>
 <%
 	// goodsList 출력 모델 호출
@@ -125,7 +79,6 @@
 		.a {
 			color : black;
 			text-decoration: none;
-			margin-right: 5px;
 		}
 	
 	
@@ -180,13 +133,12 @@
 	
 </head>
 <body class="container" style="background-color: rgba(219, 210, 224, 0.8)">
-<div class="back-box row justify-content-center">
+<div class="back-box row">
 <!-- 메인메뉴 -->
 	<div class="mb-2">
 		<jsp:include page="/emp/inc/empMenu.jsp"></jsp:include>
 	</div>
 
-	
 <!-- 서브메뉴 카테고리별 상품 리스트 -->
 	<div class="mb-3">
 		<a class="a" href="/shop/goods/goodsList.jsp">전체</a>
@@ -213,7 +165,7 @@
 		<%
 			for (HashMap<String, Object> g : goodsList) {
 		%>
-		<div><a href="/shop/goods/goodsOne.jsp?goodsNo=<%=(Integer) (g.get("goodsNo")) %>">
+		<div><a class="a" href="/shop/goods/goodsOne.jsp?goodsNo=<%=(Integer) (g.get("goodsNo")) %>">
 			
 			<div style="">
 				<img alt="" src="/shop/upload/<%=(String) (g.get("filename"))%>" style="width: 200px; height: 200px;">

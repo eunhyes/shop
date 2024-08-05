@@ -66,8 +66,6 @@
 			<div class="mb-3">
 				<button type="submit" class="button mt-3 btn" style="width: 100%;">login</button>
 			</div>
-			
-			
 		</form>
 		
 		<div>

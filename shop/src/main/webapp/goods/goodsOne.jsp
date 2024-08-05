@@ -156,6 +156,7 @@
 	%>
 
 	<div class="mb-3">
+	
 		<div>상품 번호</div>
 		<div>상품 사진</div>
 		<div>판매자ID</div>
